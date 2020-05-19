@@ -6,7 +6,7 @@
  * @author JiangJian <jian.jiang@wetax.com.cn>
  */
 
-namespace Silverd\OhMyLarave\App\Console\Commands\Danger;
+namespace Silverd\OhMyLaravel\Console\Commands\Danger;
 
 use App\Models\User;
 use Illuminate\Console\Command;

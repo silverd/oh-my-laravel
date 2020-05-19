@@ -24,14 +24,14 @@ if (! function_exists('pr')) {
 if (! function_exists('throws')) {
     function throws($message, $code = -1)
     {
-        throw new \App\Exceptions\UserException($message, $code);
+        throw new \Silverd\OhMyLaravel\Exceptions\UserException($message, $code);
     }
 }
 
 if (! function_exists('throwx')) {
     function throwx($message, $code = -9999)
     {
-        throw new \App\Exceptions\ThirdApiException($message, $code);
+        throw new \Silverd\OhMyLaravel\Exceptions\ThirdApiException($message, $code);
     }
 }
 
@@ -118,7 +118,8 @@ if (! function_exists('percentage')) {
     }
 }
 
-if (! function_exists('fetchImg')) {// 获取 URL 资源的二进制流
+if (! function_exists('fetchImg')) {
+    // 获取 URL 资源的二进制流
     function fetchImg(string $imgUrl, int $timeout = 30)
     {
         $ch = curl_init();
@@ -133,7 +134,8 @@ if (! function_exists('fetchImg')) {// 获取 URL 资源的二进制流
 }
 
 
-if (! function_exists('nowTimeMs')) {// 当前毫秒时间
+if (! function_exists('nowTimeMs')) {
+    // 当前毫秒时间
     function nowTimeMs()
     {
         return now()->format('Y-m-d H:i:s.u');
@@ -161,12 +163,12 @@ if (! function_exists('calcElapsedMs')) {
     }
 }
 
-/**
- * OSS 图片缩略图
- *
- * @see https://help.aliyun.com/document_detail/44688.html
- */
 if (! function_exists('getImgThumbUrl')) {
+    /**
+     * OSS 图片缩略图
+     *
+     * @see https://help.aliyun.com/document_detail/44688.html
+     */
     function getImgThumbUrl(string $imgUrl, int $w = 750, int $h = 750, int $quality = 100, string $mode = 'm_fill')
     {
         $imgUrl = imgUrl($imgUrl);
@@ -259,11 +261,13 @@ if (! function_exists('storageByUrlSilent')) {
     }
 }
 
-/**
- * Get the token for the current request.
- *
- * @return string
- */
+if (! function_exists('getStoragePath')) {
+    function getStoragePath(string $dirName, string $extension = '.jpg')
+    {
+        return $dirName . '/' . date('YmdH') . '/' . \Str::random(32) . $extension;
+    }
+}
+
 if (! function_exists('getTokenForRequest')) {
     function getTokenForRequest($inputKey)
     {
@@ -287,30 +291,7 @@ if (! function_exists('getTokenForRequest')) {
     }
 }
 
-if (! function_exists('encryptId')) {
-    function encryptId(int $id)
-    {
-        return (new \Hashids\Hashids('loan-kbb', 6))->encode($id);
-    }
-}
-
-if (! function_exists('decryptId')) {
-    function decryptId(string $hash)
-    {
-        $ids = (new \Hashids\Hashids('loan-kbb', 6))->decode($hash);
-
-        return $ids[0] ?? '';
-    }
-}
-
-if (! function_exists('getStoragePath')) {
-    function getStoragePath(string $dirName, string $extension = '.jpg')
-    {
-        return $dirName . '/' . date('YmdH') . '/' . \Str::random(32) . $extension;
-    }
-}
-
-if (! function_exists('resolveRequestSignature')) {// 客户唯一标识
+if (! function_exists('resolveRequestSignature')) {
     function resolveRequestSignature()
     {
         $request = request();
@@ -330,19 +311,14 @@ if (! function_exists('resolveRequestSignature')) {// 客户唯一标识
 if (! function_exists('getHourKey')) {
     function getHourKey(string $date, int $hour)
     {
-        $hourKey = $date . ' '. getHourValue($hour);
-
-        return $hourKey;
+        return $date . ' '. getHourValue($hour);
     }
 }
-
 
 if (! function_exists('getHourValue')) {
     function getHourValue(int $hour)
     {
-        $hourKey = (strlen($hour) == 2 ? '' : '0') . $hour . ':00';
-
-        return $hourKey;
+        return (strlen($hour) == 2 ? '' : '0') . $hour . ':00';
     }
 }
 

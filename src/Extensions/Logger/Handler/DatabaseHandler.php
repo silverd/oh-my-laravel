@@ -51,7 +51,7 @@ class DatabaseHandler extends AbstractProcessingHandler
     protected function checkCreateTable()
     {
         // 创建日志表
-        if (! \Schema::connection($this->connection)->hastable($this->table)) {
+        if (! \Schema::connection($this->connection)->hasTable($this->table)) {
             \Schema::connection($this->connection)->create($this->table, function (Blueprint $table) {
                 $table->increments('id')->unsigned();
                 $table->integer('level')->unsigned();

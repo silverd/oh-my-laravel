@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Throwable;
 use Silverd\OhMyLaravel\Exceptions\Handler as BaseExceptionHandler;
 
 class Handler extends BaseExceptionHandler

@@ -19,6 +19,10 @@ class BizConfig extends AbstractModel
 
     private static function fetchAll()
     {
+        if (! \Schema::hasTable($this->table)) {
+            return [];
+        }
+
         return \Cache::rememberForever('bizConfig', function () {
             return self::pluck('value', 'key')->toArray();
         });
