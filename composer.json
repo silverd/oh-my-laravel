@@ -1,0 +1,40 @@
+{
+    "name": "silverd/oh-my-laravel",
+    "type": "library",
+    "require": {
+        "beyondcode/laravel-dump-server": "^1.4",
+        "caouecs/laravel-lang": "^6.0",
+        "mnabialek/laravel-sql-logger": "^2.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "predis/predis": "^1.1",
+        "laravel/horizon": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Silverd\\OhMyLaravel\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Silverd\\OhMyLaravel\\ServiceProvider",
+                "Silverd\\OhMyLaravel\\Providers\\AppServiceProvider",
+                "Silverd\\OhMyLaravel\\Providers\\AuthServiceProvider",
+                "Silverd\\OhMyLaravel\\Providers\\LogServiceProvider",
+                "Silverd\\OhMyLaravel\\Providers\\QueueServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "minimum-stability" : "stable",
+    "authors": [
+        {
+            "name": "silverd",
+            "email": "silverd29@gmail.com"
+        }
+    ]
+}
