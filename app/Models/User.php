@@ -9,7 +9,6 @@ class User extends BaseUser
     protected $hidden = [
         'password',
         'api_token',
-        'session_key',
     ];
 
     const

@@ -23,6 +23,7 @@ class InstallCommand extends Command
     protected function replaceSomeFiles()
     {
         file_put_contents(base_path('.gitignore'), '/public/js/app.js' . PHP_EOL, FILE_APPEND);
+        file_put_contents(base_path('.gitignore'), '/public/css/app.css' . PHP_EOL, FILE_APPEND);
         file_put_contents(base_path('.gitignore'), '/public/mix-manifest.json' . PHP_EOL, FILE_APPEND);
 
         $this->replaceInFile(base_path('.gitignore'), '.env' . PHP_EOL, '');
