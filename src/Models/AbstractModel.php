@@ -30,11 +30,7 @@ abstract class AbstractModel extends Model
 
     public function getStatusTextAttribute()
     {
-        if (! isset(static::STATUS_TEXTS[$this->status])) {
-            return '-';
-        }
-
-        return static::STATUS_TEXTS[$this->status];
+        return static::STATUS_TEXTS[$this->status] ?? '-';
     }
 
     // 批量自增多个字段，同时也可更新字段
