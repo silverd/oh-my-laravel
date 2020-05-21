@@ -16,6 +16,7 @@ class ServiceProvider extends BaseServiceProvider
 
             $this->publishes([
 
+                __DIR__ . '/../sh'     => $basePath . '/sh',
                 __DIR__ . '/../app'    => $basePath . '/app',
                 __DIR__ . '/../routes' => $basePath . '/routes',
                 __DIR__ . '/../config' => $basePath . '/config',
