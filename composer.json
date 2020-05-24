@@ -4,10 +4,10 @@
     "require": {
         "beyondcode/laravel-dump-server": "^1.4",
         "caouecs/laravel-lang": "^6.0",
-        "silverd/laravel-sql-logger": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1",
-        "laravel/horizon": "^4.3"
+        "laravel/horizon": "^4.3",
+        "mnabialek/laravel-sql-logger": "^2.2"
     },
     "autoload": {
         "psr-4": {
