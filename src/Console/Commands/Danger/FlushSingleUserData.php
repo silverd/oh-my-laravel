@@ -62,7 +62,7 @@ class FlushSingleUserData extends Command
     {
         $tables = \DB::select('SHOW TABLES');
 
-        $xTableUidKeys = config('flush.x_table_uid_keys');
+        $xTableUidKeys = config('oh-my-laravel.flush.x_table_uid_keys');
 
         foreach ($tables as $table) {
             $tableName = current($table);

@@ -60,14 +60,16 @@ class FlushAllUserData extends Command
 
     protected function flushDb()
     {
+        $config = config('oh-my-laravel.flush');
+
         // 受保护的表
-        $skipTables = config('flush.skip_tables', []);
+        $skipTables = $config['skip_tables'];
 
         // 强行清理的表
-        $forceTables = config('flush.force_tables', []);
+        $forceTables = $config['force_tables'];
 
         // 可以删除的表
-        $removeTables = config('flush.remove_tables', []);
+        $removeTables = $config['remove_tables'];
 
         $tables = \DB::select('SHOW TABLES');
 
