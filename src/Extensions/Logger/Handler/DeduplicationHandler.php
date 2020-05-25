@@ -26,7 +26,7 @@ class DeduplicationHandler extends BufferHandler
         $this->time = $time;
     }
 
-    public function flush()
+    public function flush(): void
     {
         if ($this->bufferSize === 0) {
             return;
@@ -59,14 +59,14 @@ class DeduplicationHandler extends BufferHandler
         $this->clear();
     }
 
-    public function pushProcessor($callback)
+    public function pushProcessor($callback): HandlerInterface
     {
         $this->handler->pushProcessor($callback);
 
         return $this;
     }
 
-    public function setFormatter(FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         $this->handler->setFormatter($formatter);
 

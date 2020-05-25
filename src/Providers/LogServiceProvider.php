@@ -28,7 +28,11 @@ class LogServiceProvider extends ServiceProvider
                 ->setTo($with['to'])
                 ->setContentType('text/html');
 
-            $handler = new SwiftMailerHandler($app->make('swift.mailer'), $message, $with['level']);
+            $mailer = new \Swift_Mailer(
+                $app->make('mail.manager')->createTransport($config['mailers']['smtp'])
+            );
+
+            $handler = new SwiftMailerHandler($mailer, $message, $with['level']);
 
             // 以 HTML 格式输出
             $handler->setFormatter(new HtmlFormatter);
