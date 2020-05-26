@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersStatsDaily extends Migration
+class CreateUsersLoginLogs extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateUsersStatsDaily extends Migration
      */
     public function up()
     {
-        Schema::create('users_stats_daily', function (Blueprint $table) {
+        Schema::create('users_login_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('uid');
-            $table->date('today');
+            $table->string('api_token', 50);
+            $table->string('ip', 15);
             $table->timestamps();
-            $table->unique(['uid', 'today']);
+            $table->unique(['uid', 'api_token']);
         });
     }
 
@@ -29,6 +30,6 @@ class CreateUsersStatsDaily extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_stats_daily');
+        Schema::dropIfExists('users_login_logs');
     }
 }
