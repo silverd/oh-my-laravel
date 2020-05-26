@@ -1,6 +1,6 @@
- <?php
+<?php
 
- return [
+return [
 
     // 需要记录「任务执行成功日志」的队列类名
     'log_succeed_jobs' => [
@@ -31,4 +31,4 @@
 
     ],
 
- ];
+];
