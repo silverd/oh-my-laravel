@@ -6,8 +6,8 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Handler\RedisHandler;
 use Monolog\Handler\SwiftMailerHandler;
-use Silverd\OhMyLaravel\Extensions\Logger\DatabaseHandler;
-use Silverd\OhMyLaravel\Extensions\Logger\WorkWechatGroupRobotHandler;
+use Silverd\OhMyLaravel\Extensions\Logger\Handler\DatabaseHandler;
+use Silverd\OhMyLaravel\Extensions\Logger\Handler\WorkWechatGroupRobotHandler;
 
 $return = [
 
