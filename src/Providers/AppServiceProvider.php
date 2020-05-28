@@ -47,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // 加载全局业务配置
         BizConfig::initConfig();
-
     }
 
     // 一些表单验证规则
