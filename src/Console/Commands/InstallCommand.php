@@ -27,9 +27,13 @@ class InstallCommand extends Command
         file_put_contents(base_path('.gitignore'), '/public/mix-manifest.json' . PHP_EOL, FILE_APPEND);
 
         $this->replaceInFile(base_path('.gitignore'), '.env' . PHP_EOL, '');
+
         $this->replaceInFile(config_path('app.php'), 'UTC', 'Asia/Shanghai');
         $this->replaceInFile(config_path('app.php'), "'locale' => 'en'", "'locale' => 'zh-CN'");
+
         $this->replaceInFile(public_path('docs/index.html'), '__APP_NAME__', config('app.name'));
+
+        $this->replaceInFile(config_path('queue.php'), "'connection' => 'default'", "'connection' => 'queue'");
     }
 
     /**

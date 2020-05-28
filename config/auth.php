@@ -45,6 +45,10 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+        'simple' => [
+            'driver' => 'http_basic',
+            'provider' => null,
+        ],
     ],
 
     /*
@@ -113,7 +117,7 @@ return [
      */
     'basic_auth' => [
         'user'     => env('BASIC_AUTH_USER', 'silverd'),
-        'password' => env('BASIC_AUTH_PW', 'ohmyboy'),
+        'password' => env('BASIC_AUTH_PW', 'ohmyzz'),
     ],
 
 ];
