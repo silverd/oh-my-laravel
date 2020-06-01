@@ -24,7 +24,8 @@
                 "Silverd\\OhMyLaravel\\Providers\\AppServiceProvider",
                 "Silverd\\OhMyLaravel\\Providers\\AuthServiceProvider",
                 "Silverd\\OhMyLaravel\\Providers\\LogServiceProvider",
-                "Silverd\\OhMyLaravel\\Providers\\QueueServiceProvider"
+                "Silverd\\OhMyLaravel\\Providers\\QueueServiceProvider",
+                "Silverd\\OhMyLaravel\\Providers\\HorizonServiceProvider"
             ],
             "aliases": {
             }

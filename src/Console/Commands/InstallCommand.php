@@ -17,6 +17,8 @@ class InstallCommand extends Command
 
         $this->call('migrate');
 
+        $this->call('horizon:publish');
+
         $this->replaceSomeFiles();
     }
 

@@ -32,6 +32,8 @@ class ServiceProvider extends BaseServiceProvider
 
     public function register()
     {
-
+        // 记录请求响应日志
+        // 必须注册全局中间件，因为路由中间件当控制器遇到 ParseError 时不会执行
+        $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(Middleware\ReqRespLog::class);
     }
 }
