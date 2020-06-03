@@ -3,7 +3,7 @@
 ### 如何使用
 
 ```
-composer require silverd/oh-my-laravel
+composer require silverd/oh-my-laravel:dev-master
 php artisan oh-my-laravel:install
 ```
 
