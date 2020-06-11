@@ -7,12 +7,10 @@ use DateTimeInterface;
 
 abstract class AbstractModel extends Model
 {
-    /**
-     * all attributes mass assignable
-     *
-     * @var array
-     */
     protected $guarded = [];
+
+    // 模型中文名
+    protected $modelName = '';
 
     const
         STATUS_ENABLED  = 1,  // 启用
@@ -31,6 +29,18 @@ abstract class AbstractModel extends Model
     public function getStatusTextAttribute()
     {
         return static::STATUS_TEXTS[$this->status] ?? '-';
+    }
+
+    public function checkStatus($status, string $message = '')
+    {
+        $statuses = (array) $status;
+
+        if (! in_array($this->status, $statuses)) {
+            $name = $this->modelName ?: class_basename(get_called_class());
+            throws($message ?: $name . ' 状态必须为' . implode('/', \Arr::only(static::STATUS_TEXTS, $statuses)));
+        }
+
+        return $this;
     }
 
     // 批量自增多个字段，同时也可更新字段
