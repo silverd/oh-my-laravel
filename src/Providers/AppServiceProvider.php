@@ -39,13 +39,16 @@ class AppServiceProvider extends ServiceProvider
         // 不对已存在的 HTML 实体进行编码
         \Blade::withoutDoubleEncoding();
 
+        // 加载全局业务配置
+        $this->initBizConfig();
+
         // 一些表单验证规则
         $this->initValidateRules();
     }
 
+    // 加载全局业务配置
     protected function initBizConfig()
     {
-        // 加载全局业务配置
         BizConfig::initConfig();
     }
 
