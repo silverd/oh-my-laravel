@@ -21,14 +21,15 @@ class ArrayHelper
         }
 
         // 准备索引
-        foreach ($array as $key => $value) {
+        foreach ($array as $_key => $_value) {
             foreach ($sortFields as $sortField => $order) {
-                ${$sortField}[$key] = isset($value[$sortField]) ? $value[$sortField] : null;
+                ${$sortField}[$_key] = isset($_value[$sortField]) ? $_value[$sortField] : null;
             }
         }
 
         // 组合参数
         $args = [];
+
         foreach ($sortFields as $sortField => $order) {
             $args[] = ${$sortField};
             $args[] = $order;
@@ -90,7 +91,7 @@ class ArrayHelper
 
         foreach ($arrStr as $str) {
             if ($str) {
-                list($key, $value) = explode(':', $str);
+                [$key, $value] = explode(':', $str);
                 if ($reverseKv) {
                     $return[$value] = $key;
                 } else {
