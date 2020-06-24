@@ -57,9 +57,9 @@ class DatabaseHandler extends AbstractProcessingHandler
                 $table->integer('level')->unsigned();
                 $table->string('level_name');
                 $table->string('channel');
-                $table->mediumText('message');
-                $table->mediumText('context');
-                $table->mediumText('extra');
+                $table->longText('message');
+                $table->longText('context');
+                $table->longText('extra');
                 $table->timestamp('created_at')->nullable();
                 $table->charset = 'utf8mb4';
                 $table->collation = 'utf8mb4_unicode_ci';
