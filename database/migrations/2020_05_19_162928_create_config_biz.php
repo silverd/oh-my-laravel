@@ -16,8 +16,8 @@ class CreateConfigBiz extends Migration
         Schema::create('config_biz', function (Blueprint $table) {
             $table->id();
             $table->string('key', 50);
-            $table->text('value');
-            $table->string('remark', 100);
+            $table->text('value')->nullable();
+            $table->string('remark', 100)->nullable();
             $table->timestamps();
         });
     }
