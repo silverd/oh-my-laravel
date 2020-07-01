@@ -20,10 +20,12 @@ class ArrayHelper
             return $array;
         }
 
+        $indices = [];
+
         // 准备索引
-        foreach ($array as $_key => $_value) {
+        foreach ($array as $key => $value) {
             foreach ($sortFields as $sortField => $order) {
-                ${$sortField}[$_key] = isset($_value[$sortField]) ? $_value[$sortField] : null;
+                $indices[$sortField][$key] = $value[$sortField] ?? null;
             }
         }
 
@@ -31,7 +33,7 @@ class ArrayHelper
         $args = [];
 
         foreach ($sortFields as $sortField => $order) {
-            $args[] = ${$sortField};
+            $args[] = $indices[$sortField];
             $args[] = $order;
         }
 
@@ -101,5 +103,33 @@ class ArrayHelper
         }
 
         return $return;
+    }
+
+    // 键值数组转换为同级多列数组
+    public static function convertToList(array $array, string $keyColumn = 'code', string $valColumn = 'name')
+    {
+        $list = [];
+
+        foreach ($array as $index => $value) {
+            if (is_array($value)) {
+                $list[$index] = self::convertToList($value, $keyColumn, $valColumn);
+            }
+            else {
+                $list[] = [
+                    $keyColumn => $index,
+                    $valColumn => $value,
+                ];
+            }
+        }
+
+        return $list;
+    }
+
+    // 遍历筛选列表的指定列
+    public static function onlys(array $array, array $keys)
+    {
+        return array_map(function ($row) use ($keys) {
+            return \Arr::only($row, $keys);
+        }, $array);
     }
 }
