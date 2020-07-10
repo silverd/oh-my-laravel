@@ -20,12 +20,12 @@ class ArrayHelper
             return $array;
         }
 
-        $indices = [];
+        $indexes = [];
 
         // 准备索引
         foreach ($array as $key => $value) {
             foreach ($sortFields as $sortField => $order) {
-                $indices[$sortField][$key] = $value[$sortField] ?? null;
+                $indexes[$sortField][$key] = $value[$sortField] ?? null;
             }
         }
 
@@ -33,7 +33,7 @@ class ArrayHelper
         $args = [];
 
         foreach ($sortFields as $sortField => $order) {
-            $args[] = $indices[$sortField];
+            $args[] = $indexes[$sortField];
             $args[] = $order;
         }
 
@@ -106,12 +106,17 @@ class ArrayHelper
     }
 
     // 键值数组转换为同级多列数组
-    public static function convertToList(array $array, string $keyColumn = 'code', string $valColumn = 'name')
+    public static function convertToList(
+        array $array,
+        string $keyColumn = 'code',
+        string $valColumn = 'name',
+        bool $recurse = true
+    )
     {
         $list = [];
 
         foreach ($array as $index => $value) {
-            if (is_array($value)) {
+            if ($recurse && is_array($value)) {
                 $list[$index] = self::convertToList($value, $keyColumn, $valColumn);
             }
             else {
