@@ -31,4 +31,14 @@ class LbsHelper
 
         return intval($fEARTH_RADIUS * 2 * asin(sqrt($fP)) + 0.5);
     }
+
+    public static function calcDistanceKm($from, $to, int $precision = 1)
+    {
+        $distanceMi = self::calcDistance(
+            [$from['longitude'], $from['latitude']],
+            [$to['longitude'], $to['latitude']]
+        );
+
+        return round($distanceMi / 1000, $precision);
+    }
 }

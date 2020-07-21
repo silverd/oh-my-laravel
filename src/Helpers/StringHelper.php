@@ -59,4 +59,19 @@ class StringHelper
             return $dateTime;
         }
     }
+
+    // 字符串脱敏
+    public static function desensitize(string $str, int $head = 3, int $tail = 3)
+    {
+        $strLen = mb_strlen($str);
+
+        // 隐藏字符串长度
+        $hideLen = $strLen - ($head + $tail);
+
+        $newStr = mb_substr($str, 0, $head, 'UTF-8')
+            . str_pad('', $hideLen, '*')
+            . mb_substr($str, ($strLen - $tail), null, 'UTF-8');
+
+        return $newStr;
+    }
 }

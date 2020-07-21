@@ -137,4 +137,16 @@ class ArrayHelper
             return \Arr::only($row, $keys);
         }, $array);
     }
+
+    // 支持模糊排除某些下标
+    public static function except(array $array, $keys)
+    {
+        foreach ($array as $key => $value) {
+            if (\Str::is($keys, $key)) {
+                unset($array[$key]);
+            }
+        }
+
+        return $array;
+    }
 }
