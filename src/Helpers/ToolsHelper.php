@@ -2,6 +2,8 @@
 
 namespace Silverd\OhMyLaravel\Helpers;
 
+use Carbon\Carbon;
+
 class ToolsHelper
 {
     public static function getSnSuffix()
