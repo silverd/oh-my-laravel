@@ -4,6 +4,31 @@ namespace Silverd\OhMyLaravel\Helpers;
 
 class StringHelper
 {
+    /**
+     * 产生随机字符
+     *
+     * @param int $length
+     * @param bool $numeric 是否为纯数字
+     *
+     * @return string
+     */
+    public static function randCode(int $length, bool $numeric = false, string $sourceStr = '')
+    {
+        if ($numeric) {
+            $hash = sprintf('%0' . $length . 'd', mt_rand(0, pow(10, $length) - 1));
+        }
+        else {
+            $hash  = '';
+            $chars = $sourceStr ? $sourceStr : '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+            $max   = strlen($chars) - 1;
+            for ($i = 0; $i < $length; $i++) {
+                $hash .= $chars[mt_rand(0, $max)];
+            }
+        }
+
+        return $hash;
+    }
+
     // 随机获取一个姓氏
     public static function randSurname()
     {

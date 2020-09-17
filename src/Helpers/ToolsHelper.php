@@ -27,7 +27,7 @@ class ToolsHelper
      *
      * @return string $orderSn
      */
-    public static function createSn($namespace = 'default', $prefix = '', $length = 8)
+    public static function createSn(string $namespace = 'default', string $prefix = '', int $length = 8)
     {
         $insertId = \Redis::incr('FlowSn:' . ucfirst($namespace));
 
