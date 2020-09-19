@@ -202,7 +202,7 @@ if (! function_exists('getImgThumbUrl')) {
 
 if (! function_exists('storageByStream')) {
     // 将文件二进制流转存到 COS 并返回URL
-    function storageByStream(string $dirName, string $stream, string $extension = '.jpg')
+    function storageByStream(string $dirName, string $stream, string $extension = '.jpg', string $disk = '')
     {
         if (! $stream) {
             return '';
@@ -210,9 +210,11 @@ if (! function_exists('storageByStream')) {
 
         $imgPath = getStoragePath($dirName, $extension);
 
+        $stoarge = \Storage::disk($disk ?: null);
+
         // 将图片存入 COS
-        \Storage::put($imgPath, $stream);
-        $ourImgUrl = \Storage::url($imgPath);
+        $stoarge->put($imgPath, $stream);
+        $ourImgUrl = $stoarge->url($imgPath);
 
         return $ourImgUrl;
     }
@@ -220,7 +222,7 @@ if (! function_exists('storageByStream')) {
 
 if (! function_exists('storageByBase64')) {
     // 将 base64 转存到 COS 并返回URL
-    function storageByBase64(string $dirName, string $base64, string $extension = '.jpg')
+    function storageByBase64(string $dirName, string $base64, string $extension = '.jpg', string $disk = '')
     {
         if (! $base64) {
             return '';
@@ -228,13 +230,13 @@ if (! function_exists('storageByBase64')) {
 
         $imgStream = base64_decode($base64);
 
-        return storageByStream($dirName, $imgStream, $extension);
+        return storageByStream($dirName, $imgStream, $extension, $disk);
     }
 }
 
 if (! function_exists('storageByUrl')) {
     // 将远程图片转存到 COS 并返回URL
-    function storageByUrl(string $dirName, string $imgUrl, string $extension = '.jpg')
+    function storageByUrl(string $dirName, string $imgUrl, string $extension = '.jpg', string $disk = '')
     {
         if (! $imgUrl) {
             return '';
@@ -242,7 +244,7 @@ if (! function_exists('storageByUrl')) {
 
         $imgStream = fetchImg($imgUrl);
 
-        return storageByStream($dirName, $imgStream, $extension);
+        return storageByStream($dirName, $imgStream, $extension, $disk);
     }
 }
 
