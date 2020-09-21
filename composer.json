@@ -3,11 +3,11 @@
     "type": "library",
     "require": {
         "beyondcode/laravel-dump-server": "^1.4",
-        "caouecs/laravel-lang": "^6.0",
         "guzzlehttp/guzzle": "^6.3",
         "predis/predis": "^1.1",
         "laravel/horizon": "^4.3",
-        "mnabialek/laravel-sql-logger": "^2.2"
+        "mnabialek/laravel-sql-logger": "^2.2",
+        "laravel-lang/lang": "~7.0"
     },
     "autoload": {
         "psr-4": {
