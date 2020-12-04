@@ -192,4 +192,34 @@ class ToolsHelper
 
         return $completed;
     }
+
+    // 按日期合并宽表（各结果集的列数可能不一致）
+    public static function mergeMultiByToday(array $results, string $startDate, string $endDate)
+    {
+        $stats = [];
+
+        foreach ($results as $rows) {
+            // 按日期分组
+            foreach ($rows as $row) {
+                if (isset($row['today'])) {
+                    $stats[$row['today']] ??= [];
+                    $stats[$row['today']][] = $row;
+                }
+            }
+        }
+
+        $fillCallback = function (string $today, ?array $todayStats) {
+            return array_merge(['today' => $today], ...($todayStats ?? []));
+        };
+
+        // 按日期合并
+        $return = self::fillDate(
+            $startDate,
+            $endDate,
+            $stats,
+            $fillCallback
+        );
+
+        return $return;
+    }
 }
