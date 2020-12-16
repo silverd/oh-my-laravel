@@ -2,9 +2,15 @@
 
 namespace Silverd\OhMyLaravel\Models\Traits;
 
-trait RefreshToken {
+trait RefreshToken
+{
+    public function initToken()
+    {
+        if (! $this->api_token) {
+            $this->refreshToken();
+        }
+    }
 
-    // 刷新凭证
     public function refreshToken()
     {
         $this->api_token = $this->id . 'XZZ' . buildToken($this->id);

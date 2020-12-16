@@ -57,7 +57,7 @@ class AdvTokenGuard extends TokenGuard
         $this->user = $user;
 
         // 刷新凭证
-        $user->refreshToken();
+        $user->initToken();
 
         // 更新用户最后登录时间
         $user->refreshLastLogin();
