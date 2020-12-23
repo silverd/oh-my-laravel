@@ -2,7 +2,7 @@
 
 // 清除X天前的日志表
 
-namespace App\Console\Commands\Utils;
+namespace Silverd\OhMyLaravel\Console\Commands\Utils;
 
 use Illuminate\Console\Command;
 
