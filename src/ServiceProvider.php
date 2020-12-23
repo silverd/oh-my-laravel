@@ -26,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider
 
             $this->commands([
                 Console\Commands\InstallCommand::class,
+                Console\Commands\Utils\FlushDbLogs::class,
             ]);
         }
     }
