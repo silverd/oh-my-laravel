@@ -1,7 +1,8 @@
 <?php
 
 // 清除X天前的日志表
-namespace App\Console\Commands;
+
+namespace App\Console\Commands\Utils;
 
 use Illuminate\Console\Command;
 
