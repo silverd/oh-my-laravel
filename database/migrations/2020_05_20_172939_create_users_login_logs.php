@@ -19,7 +19,7 @@ class CreateUsersLoginLogs extends Migration
             $table->string('api_token', 50);
             $table->string('ip', 15);
             $table->timestamps();
-            $table->unique(['uid', 'api_token']);
+            $table->index(['uid', 'api_token']);
         });
     }
 
