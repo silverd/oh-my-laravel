@@ -386,10 +386,11 @@ if (! function_exists('guzHttpRequest')) {
         string $method = 'POST',
         string $format = null,
         array $headers = [],
-        string $respType = 'JSON'
+        string $respType = 'JSON',
+        array $guzConfig = []
     ) {
         // @see http://guzzle-cn.readthedocs.io/zh_CN/latest
-        $http = new \GuzzleHttp\Client(['verify' => false, 'headers' => $headers]);
+        $http = new \GuzzleHttp\Client(['verify' => false, 'headers' => $headers] + $guzConfig);
 
         $data = [$method == 'POST' ? 'form_params' : 'query' => $params];
 
