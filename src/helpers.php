@@ -418,11 +418,12 @@ if (! function_exists('guzHttpRequest')) {
 
             $response = $http->request($method, $url, $data);
 
+            $respCode = $response->getStatusCode();
             $respBody = $response->getBody()->getContents();
 
             // 记录响应报文（正常）
             \Log::channel('api_request')->info('resp', [
-                'resp_status' => $response->getStatusCode(),
+                'resp_status' => $respCode,
                 'resp_body'   => $respBody,
                 'elapsed'     => round(microtime(true) - $nowMs, 6),
             ]);
@@ -448,7 +449,7 @@ if (! function_exists('guzHttpRequest')) {
             }
         }
 
-        return [$result, $respBody];
+        return [$result, $respBody, $respCode];
     }
 }
 
