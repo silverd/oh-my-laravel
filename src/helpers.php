@@ -442,7 +442,7 @@ if (! function_exists('guzHttpRequest')) {
 
         $result = null;
 
-        if ($respType === 'JSON') {
+        if ($respType === 'JSON' && $respBody) {
             $result = json_decode($respBody, true);
             if (($result === false || $result === null) && json_last_error() !== JSON_ERROR_NONE) {
                 throwx('解析响应 JSON 异常：' . json_last_error_msg());
