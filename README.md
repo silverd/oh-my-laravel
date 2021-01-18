@@ -7,7 +7,7 @@ composer require silverd/oh-my-laravel:dev-master
 php artisan oh-my-laravel:install
 ```
 
-### 本地开发
+### 本地二次开发
 
 ```
 cd ~/home/wwwroot/
