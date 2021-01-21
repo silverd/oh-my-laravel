@@ -112,7 +112,7 @@ class ToolsHelper
         // 升序
         if ($isAsc) {
             while ($startMonth->lte($endMonth)) {
-                $month = $endMonth->format('Y-m');
+                $month = $startMonth->format('Y-m');
                 $completed[] = $callback($month, $data[$month] ?? null);
                 $startMonth->addMonth();
             }
