@@ -19,6 +19,8 @@ class InstallCommand extends Command
 
         $this->call('horizon:publish');
 
+        $this->call('lang:publish zh-CN');
+
         $this->replaceSomeFiles();
     }
 
