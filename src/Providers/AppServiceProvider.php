@@ -5,6 +5,7 @@ namespace Silverd\OhMyLaravel\Providers;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Silverd\OhMyLaravel\Models\BizConfig;
+use Silverd\OhMyLaravel\Helpers\IDCardHelper;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -62,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
         \Validator::extend('zh_mobile', function ($attribute, $value) {
             return preg_match('/^(\+?0?86\-?)?1[3-9]{1}\d{9}$/', $value);
         }, '无效的手机号格式');
+
+        // 表单验证扩展：身份证
+        \Validator::extend('zh_idcard', function ($attribute, $value) {
+            return IDCardHelper::validate($value);
+        }, '身份证格式不正确');
     }
 
     protected function initCollectionMarco()

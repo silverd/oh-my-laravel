@@ -36,6 +36,22 @@ class ToolsHelper
         return $prefix . date('ymdHi') . str_pad(substr($insertId, -$length), $length, 0, STR_PAD_LEFT) . $suffix;
     }
 
+    // 简短的订单编号（每天重置自增）
+    public static function createShortSn(string $namespace = '', int $length = 4)
+    {
+        $cacheKey = 'ShortSn:' . ucfirst($namespace);
+
+        $insertId = \Redis::incr($cacheKey);
+
+        // 超过上限则自动重置
+        if (strlen($insertId) > $length) {
+            $insertId = 1;
+            \Redis::set($cacheKey, $insertId);
+        }
+
+        return str_pad($insertId, $length, '0', STR_PAD_LEFT);
+    }
+
     // 填充日期
     public static function fillDate(
         string $startDate,
