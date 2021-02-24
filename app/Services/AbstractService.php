@@ -2,19 +2,9 @@
 
 namespace App\Services;
 
-abstract class AbstractService
+use Silverd\OhMyLaravel\Services\AbstractService as BaseAbstractService;
+
+abstract class AbstractService extends BaseAbstractService
 {
-    protected $config;
 
-    public function __construct(array $config)
-    {
-        $this->config = $config;
-
-        $this->init();
-    }
-
-    public function init()
-    {
-
-    }
 }
