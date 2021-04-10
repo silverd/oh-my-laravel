@@ -496,3 +496,16 @@ if (! function_exists('buildSignature')) {
         return urlencode($signStr);
     }
 }
+
+if (! function_exists('bcArraySum')) {
+    function bcArraySum(array $nums, int $decimal = 2)
+    {
+        $sum = 0;
+
+        foreach ($nums as $num) {
+            $sum = bcadd($sum, $num, $decimal);
+        }
+
+        return $sum;
+    }
+}
