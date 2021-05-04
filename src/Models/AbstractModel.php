@@ -76,4 +76,19 @@ abstract class AbstractModel extends Model
     {
         return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
+
+    // 异步将指定字段的 URL 资源转存到 COS
+    public function asyncStorageByUrl(string $field, string $dirName = '', string $extension = '.jpg')
+    {
+        if (! $this->$field) {
+            return false;
+        }
+
+        // 如果该 URL 本来就是 COS 上的资源，所以无需转存
+        if (starts_with($this->$field, \Storage::getAdapter()->getPathPrefix())) {
+            return false;
+        }
+
+        StorageByUrlJob::dispatch($this, $field, [$dirName ?: $field, $this->$field, $extension]);
+    }
 }
