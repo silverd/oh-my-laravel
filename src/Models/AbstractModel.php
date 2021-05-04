@@ -2,6 +2,7 @@
 
 namespace Silverd\OhMyLaravel\Models;
 
+use App\Jobs\StorageByUrlJob;
 use Illuminate\Database\Eloquent\Model;
 use DateTimeInterface;
 
