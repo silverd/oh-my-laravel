@@ -86,7 +86,7 @@ abstract class AbstractModel extends Model
         }
 
         // 如果该 URL 本来就是 COS 上的资源，所以无需转存
-        if (starts_with($this->$field, \Storage::getAdapter()->getPathPrefix())) {
+        if (\Str::startsWith($this->$field, \Storage::getAdapter()->getPathPrefix())) {
             return false;
         }
 
