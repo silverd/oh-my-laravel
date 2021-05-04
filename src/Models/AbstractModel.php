@@ -85,8 +85,10 @@ abstract class AbstractModel extends Model
             return false;
         }
 
+        $remoteHost = \Storage::url('/');
+
         // 如果该 URL 本来就是 COS 上的资源，所以无需转存
-        if (\Str::startsWith($this->$field, \Storage::getAdapter()->getPathPrefix())) {
+        if (\Str::startsWith($this->$field, $remoteHost)) {
             return false;
         }
 
