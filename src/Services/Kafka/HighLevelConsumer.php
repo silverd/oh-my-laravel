@@ -3,10 +3,10 @@
 // @see https://github.com/arnaud-lb/php-rdkafka
 // @see https://awesomeopensource.com/project/arnaud-lb/php-rdkafka
 
-namespace App\Services\Kafka;
+namespace Silverd\OhMyLaravel\Services\Kafka;
 
 use RdKafka;
-use App\Services\AbstractService;
+use Silverd\OhMyLaravel\Services\AbstractService;
 
 class HighLevelConsumer extends AbstractService
 {
