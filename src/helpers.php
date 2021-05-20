@@ -475,6 +475,21 @@ if (! function_exists('base64Img')) {
     }
 }
 
+if (! function_exists('base64ImgWithCache')) {
+    function base64ImgWithCache(string $imgUrl, int $ttlSecs = 0)
+    {
+        if (! $imgUrl) {
+            return '';
+        }
+
+        $ttlSecs = $ttlSecs ?: 86400 * 7;
+
+        return \Cache::remember(md5($imgUrl), $ttlSecs, function () {
+            return base64Img(fetchImg($imgUrl));
+        });
+    }
+}
+
 if (! function_exists('buildSignature')) {
     function buildSignature(array $params, string $secretKey)
     {
