@@ -484,7 +484,7 @@ if (! function_exists('base64ImgWithCache')) {
 
         $ttlSecs = $ttlSecs ?: 86400 * 7;
 
-        return \Cache::remember(md5($imgUrl), $ttlSecs, function () {
+        return \Cache::remember('base64Img:' . md5($imgUrl), $ttlSecs, function () use ($imgUrl) {
             return base64Img(fetchImg($imgUrl));
         });
     }
