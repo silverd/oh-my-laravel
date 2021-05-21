@@ -14,6 +14,9 @@ class TableauService extends AbstractService
 {
     const UNLICENSED_ROLE = 'Unlicensed';
 
+    const STATE_SUSPENDED = 'Suspended';
+    const STATE_ACTIVE = 'Active';
+
     protected function request(string $method, string $url, array $params = [], array $headers = [])
     {
         $headers += [
@@ -33,9 +36,11 @@ class TableauService extends AbstractService
         return $response;
     }
 
-    protected function requestWithToken(string $method, string $url, array $params = [])
+    protected function requestWithToken(string $method, string $url, array $params = [], int $failTimes = 0)
     {
-        $authToken = \Cache::remember('tableauAuthTokenV2', 3600, function () {
+        $tokenCacheKey = 'tableauAuthTokenV2';
+
+        $authToken = \Cache::remember($tokenCacheKey, 3600, function () {
             return $this->signInByAccessToken()['credentials']['token'] ?? '';
         });
 
@@ -43,7 +48,22 @@ class TableauService extends AbstractService
             'X-Tableau-Auth' => $authToken,
         ];
 
-        return $this->request($method, $url, $params, $headers);
+        try {
+            return $this->request($method, $url, $params, $headers);
+        }
+
+        catch (\Exception $e) {
+
+            // 遇到 AuthToken 互顶情况重试3次
+            if (strpos($e->getMessage(), '401002') !== false) {
+                if ($failTimes < 3) {
+                    \Cache::forget($tokenCacheKey);
+                    return $this->requestWithToken($method, $url, $params, ++$failTimes);
+                }
+            }
+
+            throw $e;
+        }
     }
 
     protected function getParams(array $params, array $fields)
@@ -190,7 +210,7 @@ class TableauService extends AbstractService
     }
 
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_jobs_tasks_and_schedules.htm#update_schedule
-    public function updateSchedule(string $scheduleId)
+    public function updateSchedule(string $scheduleId, array $params)
     {
         $updated = $this->getParams($params, [
             'name',
@@ -204,15 +224,15 @@ class TableauService extends AbstractService
             return false;
         }
 
-        $url = '/sites/' . $this->config['site_id'] . '/schedules/' . $scheduleId;
+        $url = '/schedules/' . $scheduleId;
 
         return $this->requestWithToken('PUT', $url, ['schedule' => $updated]);
     }
 
     public function enableSchedule(string $scheduleId, bool $on = true)
     {
-        return $this->updateUser($userId, [
-            'state' => $on ? 'Active' : 'Suspended',
+        return $this->updateSchedule($scheduleId, [
+            'state' => $on ? self::STATE_ACTIVE : self::STATE_SUSPENDED,
         ]);
     }
 
