@@ -28,7 +28,7 @@ class WeComRobotService extends AbstractService
         return $this->request($params);
     }
 
-    public function sendMarkdown(string $content)
+    public function sendMarkdown(string $content, array $atSbs = [])
     {
         $params = [
             'msgtype' => 'markdown',
@@ -37,7 +37,15 @@ class WeComRobotService extends AbstractService
             ],
         ];
 
-        return $this->request($params);
+        $result = [
+            $this->request($params),
+        ];
+
+        if ($atSbs) {
+            $result[] = $this->sendText('请看楼上☝️☝️☝️', $atSbs);
+        }
+
+        return $result;
     }
 
     public function sendImage(string $imgStream)
