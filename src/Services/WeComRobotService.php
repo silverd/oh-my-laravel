@@ -30,6 +30,12 @@ class WeComRobotService extends AbstractService
 
     public function sendMarkdown(string $content, array $atSbs = [])
     {
+        if ($content) {
+            $content .= PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(function ($name) {
+                return '<@' . $name . '>';
+            }, $atSbs));
+        }
+
         $params = [
             'msgtype' => 'markdown',
             'markdown' => [
@@ -37,15 +43,7 @@ class WeComRobotService extends AbstractService
             ],
         ];
 
-        $result = [
-            $this->request($params),
-        ];
-
-        if ($atSbs) {
-            $result[] = $this->sendText('请看楼上☝️☝️☝️', $atSbs);
-        }
-
-        return $result;
+        return $this->request($params);
     }
 
     public function sendImage(string $imgStream)
