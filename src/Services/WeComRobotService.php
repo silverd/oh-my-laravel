@@ -30,7 +30,7 @@ class WeComRobotService extends AbstractService
 
     public function sendMarkdown(string $content, array $atSbs = [])
     {
-        if ($content) {
+        if ($atSbs) {
             $content .= PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(function ($name) {
                 return '<@' . $name . '>';
             }, $atSbs));
