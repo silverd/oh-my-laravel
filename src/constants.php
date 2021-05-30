@@ -1,0 +1,5 @@
+<?php
+
+const PHP_2EOL = PHP_EOL . PHP_EOL;
+const PHP_3EOL = PHP_EOL . PHP_EOL . PHP_EOL;
+const PHP_4EOL = PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
