@@ -130,7 +130,7 @@ class ToolsHelper
             while ($startMonth->lte($endMonth)) {
                 $month = $startMonth->format('Y-m');
                 $completed[] = $callback($month, $data[$month] ?? null);
-                $startMonth->addMonth();
+                $startMonth->addMonthWithoutOverflow();
             }
         }
         // 倒序
@@ -138,7 +138,7 @@ class ToolsHelper
             while ($endMonth->gte($startMonth)) {
                 $month = $endMonth->format('Y-m');
                 $completed[] = $callback($month, $data[$month] ?? null);
-                $endMonth->subMonth();
+                $endMonth->subMonthWithoutOverflow();
             }
         }
 
