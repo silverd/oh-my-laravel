@@ -484,9 +484,30 @@ if (! function_exists('base64ImgWithCache')) {
 
         $ttlSecs = $ttlSecs ?: 86400 * 7;
 
-        return \Cache::remember('base64Img:' . md5($imgUrl), $ttlSecs, function () use ($imgUrl) {
-            return base64Img(fetchImg($imgUrl));
+        return \Cache::remember('base64XImg:' . md5($imgUrl), $ttlSecs, function () use ($imgUrl) {
+            return base64Img(imgUrlToStream($imgUrl));
         });
+    }
+}
+
+if (! function_exists('imgUrlToStream')) {
+    function imgUrlToStream(string $imgUrl)
+    {
+        $siteUrl = config('app.url');
+
+        // 本地图片
+        if (strpos($imgUrl, $siteUrl) === 0) {
+
+            $imgPath = str_replace($siteUrl, '', $imgUrl);
+
+            return file_get_contents(public_path($imgPath));
+        }
+
+        // 远程图片
+        else {
+
+            return fetchImg($imgUrl);
+        }
     }
 }
 
