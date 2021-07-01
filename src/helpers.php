@@ -20,7 +20,6 @@ if (! function_exists('pr')) {
     }
 }
 
-
 if (! function_exists('throws')) {
     function throws($message, $code = -1)
     {
@@ -442,10 +441,12 @@ if (! function_exists('guzHttpRequest')) {
 
         $result = null;
 
-        if ($respType === 'JSON' && $respBody) {
+        if ($respBody && strpos($respType, 'JSON') !== false) {
             $result = json_decode($respBody, true);
-            if (($result === false || $result === null) && json_last_error() !== JSON_ERROR_NONE) {
-                throwx('解析响应 JSON 异常：' . json_last_error_msg());
+            if (strpos($respType, 'NO_CHECK') !== false) {
+                if (($result === false || $result === null) && json_last_error() !== JSON_ERROR_NONE) {
+                    throwx('解析响应 JSON 异常：' . json_last_error_msg());
+                }
             }
         }
 
