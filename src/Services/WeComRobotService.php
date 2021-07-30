@@ -81,7 +81,7 @@ class WeComRobotService extends AbstractService
         return $this->request($params);
     }
 
-    private function request(array $params)
+    public function request(array $params)
     {
         $url = self::API_URL . '?key=' . $this->config['group_key'];
 
