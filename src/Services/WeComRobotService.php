@@ -89,7 +89,7 @@ class WeComRobotService extends AbstractService
 
         $result = json_decode($response->body(), true);
 
-        if (isset($result['errcode'])) {
+        if (isset($result['errcode']) && $result['errcode'] != 0) {
             throws('WeComError: ' . $result['errcode'] . '|' . $result['errmsg']);
         }
 
