@@ -19,7 +19,7 @@ class BizConfig extends AbstractModel
 
     private static function fetchAll()
     {
-        if (! \Schema::hasTable('config_biz')) {
+        if (! config('oh-my-laravel.biz_config')) {
             return [];
         }
 
