@@ -15,7 +15,7 @@ class TableauService extends AbstractService
     const UNLICENSED_ROLE = 'Unlicensed';
 
     const STATE_SUSPENDED = 'Suspended';
-    const STATE_ACTIVE = 'Active';
+    const STATE_ACTIVE    = 'Active';
 
     protected function request(string $method, string $url, array $params = [], array $headers = [])
     {
@@ -38,7 +38,7 @@ class TableauService extends AbstractService
 
     protected function requestWithToken(string $method, string $url, array $params = [], int $failTimes = 0)
     {
-        $tokenCacheKey = 'tableauAuthTokenV2';
+        $tokenCacheKey = 'tableauAuthTokenV3';
 
         $authToken = \Cache::remember($tokenCacheKey, 3600, function () {
             return $this->signInByAccessToken()['credentials']['token'] ?? '';
@@ -186,11 +186,32 @@ class TableauService extends AbstractService
         return $this->requestWithToken('GET', $url);
     }
 
+    public function queryWorkbook(string $workbookId)
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/workbooks/' . $workbookId;
+
+        return $this->requestWithToken('GET', $url);
+    }
+
     public function downloadWorkbook(string $workbookId, string $type = 'pdf')
     {
         $url = '/sites/' . $this->config['site_id'] . '/workbooks/' . $workbookId . '/' . $type;
 
         return $this->requestWithToken('GET', $url);
+    }
+
+    public function downloadView(string $viewId, string $type = 'image')
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/views/' . $viewId . '/' . $type . '?maxAge=1';
+
+        return $this->requestWithToken('GET', $url);
+    }
+
+    public function downloadWorkbookDefaultView(string $workbookId, string $type = 'image')
+    {
+        $workbook = $this->queryWorkbook($workbookId);
+
+        return $this->downloadView($workbook['workbook']['defaultViewId'], $type);
     }
 
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_jobs_tasks_and_schedules.htm#query_schedules
@@ -204,7 +225,7 @@ class TableauService extends AbstractService
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_jobs_tasks_and_schedules.htm#get-schedule
     public function getSchedule(string $scheduleId)
     {
-        $url = '/sites/' . $this->config['site_id'] . '/schedules/' . $scheduleId;
+        $url = '/schedules/' . $scheduleId;
 
         return $this->requestWithToken('GET', $url);
     }
@@ -325,6 +346,27 @@ class TableauService extends AbstractService
         return $this->requestWithToken('POST', '/sites/' . $this->config['site_id'] . '/datasources/' . $datasourceId . '/refresh');
     }
 
+    public function runScheduleExtractTasks(string $scheduleId)
+    {
+        $jobIds = [];
+
+        // 找出「数据抽取计划」中的所有抽取任务
+        $extracts = $this->getRefreshTaskInSchedule($scheduleId);
+
+        $extracts = $extracts['extracts']['extract'] ?? [];
+
+        foreach ($extracts as $task) {
+
+            // 异步执行抽取任务
+            $job = $this->runExtractRefreshTask($task['id']);
+
+            // 返回异步请求 ID
+            $jobIds[] = $job['job']['id'];
+        }
+
+        return $jobIds;
+    }
+
     // 获取嵌入 Iframe 网页的票据
     public function getIframeTicket()
     {
@@ -335,5 +377,27 @@ class TableauService extends AbstractService
         $response = \Http::asForm()->post($this->config['api_host'] . '/trusted', $params);
 
         return $response->body();
+    }
+
+    public function getSchedulesByName(array $scheduleNames)
+    {
+        $schedules = $this->querySchedules();
+
+        $schedules = $schedules['schedules']['schedule'];
+
+        return array_filter($schedules, function ($schedule) use ($scheduleNames) {
+            return in_array($schedule['name'], $scheduleNames);
+        });
+    }
+
+    public function getWorkbooksByName(array $workbookNames)
+    {
+        $workbooks = $this->queryWorkbooks();
+
+        $workbooks = $schedules['workbooks']['workbook'];
+
+        return array_filter($workbooks, function ($workbook) use ($workbookNames) {
+            return in_array($workbook['name'], $workbookNames);
+        });
     }
 }
