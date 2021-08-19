@@ -324,4 +324,16 @@ class TableauService extends AbstractService
     {
         return $this->requestWithToken('POST', '/sites/' . $this->config['site_id'] . '/datasources/' . $datasourceId . '/refresh');
     }
+
+    // 获取嵌入 Iframe 网页的票据
+    public function getIframeTicket()
+    {
+        $params = [
+            'username' => $this->config['ticket_user'],
+        ];
+
+        $response = \Http::asForm()->post($this->config['api_host'] . '/trusted', $params);
+
+        return $response->body();
+    }
 }
