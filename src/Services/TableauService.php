@@ -17,30 +17,53 @@ class TableauService extends AbstractService
     const STATE_SUSPENDED = 'Suspended';
     const STATE_ACTIVE    = 'Active';
 
-    protected function request(string $method, string $url, array $params = [], array $headers = [])
+    protected function request(
+        string $method,
+        string $url,
+        array $params = [],
+        array $headers = [],
+        string $respType = 'JSON'
+    )
     {
         $headers += [
             'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
         ];
 
-        $prefix = $this->config['api_host'] . '/api/' . $this->config['api_version'];
+        $url = $this->config['api_host'] . '/api/' . $this->config['api_version'] . $url;
 
-        $response = \Http::withHeaders($headers)->$method($prefix . $url, $params);
+        $format = 'JSON';
 
-        $response = json_decode($response, true);
-
-        if (isset($response['error'])) {
-            throws(implode(' | ', $response['error']));
+        // 踩坑：Tableau 服务端要求 POST 即使空参数也必须传空对象，而不能是 NULL
+        if ($method == 'POST' && ! $params) {
+            $params = '{}';
+            $format = 'RAW';
         }
 
-        return $response;
+        [$result, $respBody] = guzHttpRequest($url, $params, $method, $format, $headers, $respType);
+
+        if (isset($result['error'])) {
+            throws(implode(' | ', $result['error']));
+        }
+
+        if ($respType == 'RAW') {
+            return $respBody;
+        }
+
+        return $result;
     }
 
-    protected function requestWithToken(string $method, string $url, array $params = [], int $failTimes = 0)
+    protected function requestWithToken(
+        string $method,
+        string $url,
+        array $params = [],
+        string $respType = 'JSON',
+        int $failTimes = 0
+    )
     {
-        $tokenCacheKey = 'tableauAuthTokenV3';
+        $tokenCacheKey = 'tableauAuthTokenV5';
 
-        $authToken = \Cache::remember($tokenCacheKey, 3600, function () {
+        $authToken = \Cache::remember($tokenCacheKey, 1800, function () {
             return $this->signInByAccessToken()['credentials']['token'] ?? '';
         });
 
@@ -49,7 +72,7 @@ class TableauService extends AbstractService
         ];
 
         try {
-            return $this->request($method, $url, $params, $headers);
+            return $this->request($method, $url, $params, $headers, $respType);
         }
 
         catch (\Exception $e) {
@@ -58,7 +81,7 @@ class TableauService extends AbstractService
             if (strpos($e->getMessage(), '401002') !== false) {
                 if ($failTimes < 3) {
                     \Cache::forget($tokenCacheKey);
-                    return $this->requestWithToken($method, $url, $params, ++$failTimes);
+                    return $this->requestWithToken($method, $url, $params, $respType, ++$failTimes);
                 }
             }
 
@@ -204,7 +227,7 @@ class TableauService extends AbstractService
     {
         $url = '/sites/' . $this->config['site_id'] . '/views/' . $viewId . '/' . $type . '?maxAge=1';
 
-        return $this->requestWithToken('GET', $url);
+        return $this->requestWithToken('GET', $url, [], 'RAW');
     }
 
     public function downloadWorkbookDefaultView(string $workbookId, string $type = 'image')
@@ -379,7 +402,7 @@ class TableauService extends AbstractService
         return $response->body();
     }
 
-    public function getSchedulesByName(array $scheduleNames)
+    public function getSchedulesByNames(array $scheduleNames)
     {
         $schedules = $this->querySchedules();
 
@@ -390,7 +413,7 @@ class TableauService extends AbstractService
         });
     }
 
-    public function getWorkbooksByName(array $workbookNames)
+    public function getWorkbooksByNames(array $workbookNames)
     {
         $workbooks = $this->queryWorkbooks();
 
