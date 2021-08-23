@@ -19,7 +19,11 @@ class BizConfig extends AbstractModel
 
     private static function fetchAll()
     {
-        if (! config('oh-my-laravel.biz_config')) {
+        $config = config('oh-my-laravel');
+
+        $on = $config['biz_config'] ?? true;
+
+        if (! $on) {
             return [];
         }
 
