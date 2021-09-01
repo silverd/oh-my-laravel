@@ -344,6 +344,14 @@ if (! function_exists('floorx')) {
     }
 }
 
+if (! function_exists('roundx')) {
+    // 舍去法保留N位小数
+    function roundx(float $val, int $precision = 2)
+    {
+        return number_format(round($val, $precision), $precision, '.', '');
+    }
+}
+
 if (! function_exists('_T')) {
     // 替换字符串中的变量
     function _T(string $message, array $vars = [])
