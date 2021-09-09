@@ -105,6 +105,11 @@ $return = [
             'handler' => NullHandler::class,
         ],
 
+        'req_resp' => [
+            'driver' => 'monolog',
+            'handler' => NullHandler::class,
+        ],
+
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
@@ -210,7 +215,6 @@ $return = [
 
 $LOG_DB_CHANNELS = [
     'api_request',
-    'req_resp',
 ];
 
 foreach ($LOG_DB_CHANNELS as $channel) {
