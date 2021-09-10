@@ -209,9 +209,24 @@ class TableauService extends AbstractService
         return $this->requestWithToken('GET', $url);
     }
 
+    // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_workbooks_and_views.htm#query_views_for_site
+    public function queryViews()
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/views';
+
+        return $this->requestWithToken('GET', $url);
+    }
+
     public function queryWorkbook(string $workbookId)
     {
         $url = '/sites/' . $this->config['site_id'] . '/workbooks/' . $workbookId;
+
+        return $this->requestWithToken('GET', $url);
+    }
+
+    public function queryWorkbookViews(string $workbookId)
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/workbooks/' . $workbookId . '/views';
 
         return $this->requestWithToken('GET', $url);
     }
