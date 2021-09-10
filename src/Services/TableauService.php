@@ -209,6 +209,22 @@ class TableauService extends AbstractService
         return $this->requestWithToken('GET', $url);
     }
 
+    // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_workbooks_and_views.htm#get_view
+    public function getView(string $viewId)
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/views/' . $viewId;
+
+        return $this->requestWithToken('GET', $url);
+    }
+
+    // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_workbooks_and_views.htm#get_view_by_path
+    public function getViewByPath(string $name)
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/views?filter=viewUrlName:eq:' . rawurlencode($name);
+
+        return $this->requestWithToken('GET', $url);
+    }
+
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_workbooks_and_views.htm#query_views_for_site
     public function queryViews()
     {
