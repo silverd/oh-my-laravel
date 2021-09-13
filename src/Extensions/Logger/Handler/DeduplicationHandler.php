@@ -18,9 +18,11 @@ class DeduplicationHandler extends BufferHandler
         CacheRepository $cache,
         int $level = Logger::ERROR,
         int $time = 60,
+        int $bufferLimit = 0,
+        bool $flushOnOverflow = true,
         bool $bubble = true
     ) {
-        parent::__construct($handler, 0, $level, $bubble);
+        parent::__construct($handler, $bufferLimit, $level, $bubble, $flushOnOverflow);
 
         $this->cache = $cache;
         $this->time = $time;
