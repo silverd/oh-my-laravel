@@ -120,23 +120,25 @@ $return = [
             'handler'   => SwiftMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
-                'level'   => Logger::ERROR,
-                'subject' => env('APP_NAME') . ' ERRORS',
-                'to'      => explode(',', env('LOG_MAIL_TO')),
-                'cd_secs' => 60,
+                'level'        => Logger::ERROR,
+                'subject'      => env('APP_NAME') . ' ERRORS',
+                'to'           => explode(',', env('LOG_MAIL_TO')),
+                'cd_secs'      => 60,
+                'buffer_limit' => 0,
             ],
         ],
 
-        // 邮件错误报警
-        'buffermail' => [
+        // 邮件错误报警（不缓冲）
+        'errordaemon' => [
             'driver'    => 'monolog',
             'handler'   => SwiftMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
-                'level'        => Logger::WARNING,
-                'subject'      => env('APP_NAME') . ' WARNINGS',
+                'level'        => Logger::ERROR,
+                'subject'      => env('APP_NAME') . ' ERRORS',
                 'to'           => explode(',', env('LOG_MAIL_TO')),
                 'cd_secs'      => 60,
+                'buffer_limit' => 10,
             ],
         ],
 
@@ -146,9 +148,10 @@ $return = [
             'handler'   => SwiftMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
-                'level'   => Logger::DEBUG,
-                'subject' => env('APP_NAME') . ' INFOS',
-                'to'      => explode(',', env('LOG_MAIL_TO')),
+                'level'        => Logger::DEBUG,
+                'subject'      => env('APP_NAME') . ' INFOS',
+                'to'           => explode(',', env('LOG_MAIL_TO')),
+                'buffer_limit' => 0,
             ],
         ],
 
