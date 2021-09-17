@@ -38,13 +38,13 @@ class LogServiceProvider extends ServiceProvider
             $handler->setFormatter(new HtmlFormatter);
 
             // 重复消息冷却去重（装饰模式）
-            if (isset($with['cd_secs']) && $with['cd_secs'] > 0) {
+            if (isset($with['cd_secs']) || isset($with['buffer_limit'])) {
                 return new DeduplicationHandler(
                     $handler,
                     $app['cache']->store('redis'),
                     $with['level'],
-                    $with['cd_secs'],
-                    $with['buffer_limit'] ?? 1,
+                    $with['cd_secs'] ?? 0,
+                    $with['buffer_limit'] ?? 0,
                     $with['flush_on_overflow'] ?? true,
                 );
             }

@@ -121,9 +121,22 @@ $return = [
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::ERROR,
-                'subject' => env('APP_NAME') . ' Error Logs',
+                'subject' => env('APP_NAME') . ' ERRORS',
                 'to'      => explode(',', env('LOG_MAIL_TO')),
                 'cd_secs' => 60,
+            ],
+        ],
+
+        // 邮件错误报警
+        'buffermail' => [
+            'driver'    => 'monolog',
+            'handler'   => SwiftMailerHandler::class,
+            'formatter' => 'default',
+            'with'    => [
+                'level'        => Logger::WARNING,
+                'subject'      => env('APP_NAME') . ' WARNINGS',
+                'to'           => explode(',', env('LOG_MAIL_TO')),
+                'cd_secs'      => 60,
             ],
         ],
 
@@ -134,7 +147,7 @@ $return = [
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::DEBUG,
-                'subject' => env('APP_NAME') . ' Info Logs',
+                'subject' => env('APP_NAME') . ' INFOS',
                 'to'      => explode(',', env('LOG_MAIL_TO')),
             ],
         ],
