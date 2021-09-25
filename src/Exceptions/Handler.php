@@ -73,7 +73,7 @@ class Handler extends ExceptionHandler
 
     protected function handleApiException($request, Throwable $exception)
     {
-        $code = $exception->getCode() ?: -1;
+        $code = (int) $exception->getCode() ?: -1;
         $message = $exception->getMessage() ?: 'Oops';
 
         if ($exception instanceof UserException) {
