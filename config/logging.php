@@ -120,11 +120,10 @@ $return = [
             'handler'   => SwiftMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
-                'level'        => Logger::ERROR,
-                'subject'      => env('APP_NAME') . ' ERRORS',
-                'to'           => explode(',', env('LOG_MAIL_TO')),
-                'cd_secs'      => 60,
-                'buffer_limit' => 0,
+                'level'   => Logger::ERROR,
+                'subject' => env('APP_NAME') . ' ERRORS',
+                'to'      => explode(',', env('LOG_MAIL_TO')),
+                'cd_secs' => 60,
             ],
         ],
 
@@ -148,10 +147,9 @@ $return = [
             'handler'   => SwiftMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
-                'level'        => Logger::DEBUG,
-                'subject'      => env('APP_NAME') . ' INFOS',
-                'to'           => explode(',', env('LOG_MAIL_TO')),
-                'buffer_limit' => 0,
+                'level'   => Logger::DEBUG,
+                'subject' => env('APP_NAME') . ' INFOS',
+                'to'      => explode(',', env('LOG_MAIL_TO')),
             ],
         ],
 

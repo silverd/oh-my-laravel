@@ -44,7 +44,7 @@ class LogServiceProvider extends ServiceProvider
                     $app['cache']->store('redis'),
                     $with['level'],
                     $with['cd_secs'] ?? 0,
-                    $with['buffer_limit'] ?? 0,
+                    $with['buffer_limit'] ?? 1,
                     $with['flush_on_overflow'] ?? true,
                 );
             }
