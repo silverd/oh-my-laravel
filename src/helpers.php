@@ -415,8 +415,11 @@ if (! function_exists('guzHttpRequest')) {
         // 当前时间
         $nowMs = microtime(true);
 
+        // 请求流水号
+        $requestSn = \Str::orderedUuid();
+
         // 记录请求报文
-        \Log::channel('api_request')->info('req', [
+        \Log::channel('api_request')->info('req:' . $requestSn, [
             'req_url'  => $url,
             'req_body' => $data,
         ]);
@@ -429,7 +432,7 @@ if (! function_exists('guzHttpRequest')) {
             $respBody = $response->getBody()->getContents();
 
             // 记录响应报文（正常）
-            \Log::channel('api_request')->info('resp', [
+            \Log::channel('api_request')->info('resp:' . $requestSn, [
                 'resp_status' => $respCode,
                 'resp_body'   => $respBody,
                 'elapsed'     => round(microtime(true) - $nowMs, 6),
@@ -439,7 +442,7 @@ if (! function_exists('guzHttpRequest')) {
         catch (\Throwable $e) {
 
             // 记录响应报文（异常）
-            \Log::channel('api_request')->info('resp_err', [
+            \Log::channel('api_request')->info('resp_err:' . $requestSn, [
                 'exception' => getFullException($e),
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
