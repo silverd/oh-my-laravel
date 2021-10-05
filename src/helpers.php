@@ -465,6 +465,44 @@ if (! function_exists('guzHttpRequest')) {
     }
 }
 
+if (! function_exists('loggingRequest')) {
+    function loggingInOut(string $channel, array $args, callable $callback)
+    {
+        // 当前时间
+        $nowMs = microtime(true);
+
+        // 请求流水号
+        $requestSn = \Str::orderedUuid();
+
+        // 记录请求报文
+        \Log::channel($channel)->info('req:' . $requestSn, [
+            'req_args' => $args,
+        ]);
+
+        try {
+
+            $response = call_user_func_array($callback, $args);
+
+            // 记录响应报文（正常）
+            \Log::channel($channel)->info('resp:' . $requestSn, [
+                'resp_body' => $response,
+                'elapsed'   => round(microtime(true) - $nowMs, 6),
+            ]);
+        }
+
+        catch (\Throwable $e) {
+
+            \Log::channel($channel)->info('resp_err:' . $requestSn, [
+                'exception' => getFullException($e),
+                'elapsed'   => round(microtime(true) - $nowMs, 6),
+            ]);
+
+            throw $e;
+        }
+
+        return $response;
+    }
+}
 
 if (! function_exists('cacheRemember')) {
     // 缓存结果集
