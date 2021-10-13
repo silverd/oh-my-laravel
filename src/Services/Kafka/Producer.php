@@ -21,9 +21,16 @@ class Producer extends AbstractService
         // Initial list of Kafka brokers
         $conf->set('metadata.broker.list', $this->config['broker_list']);
 
-        // If you need to produce exactly once and want to keep the original produce order, uncomment the line below
-        // @see http://www.jasongj.com/kafka/transaction
-        $conf->set('enable.idempotence', 'true');
+        try {
+
+            // If you need to produce exactly once and want to keep the original produce order, uncomment the line below
+            // @see http://www.jasongj.com/kafka/transaction
+            $conf->set('enable.idempotence', 'true');
+        }
+        catch (RdKafka\Exception $e) {
+            // librdkafka 低版本不支持此参数
+            // @see https://hub.xn--gzu630h.xn--kpry57d/arnaud-lb/php-rdkafka/issues/262
+        }
 
         if ($errorCb) {
             // The error callback is used by librdkafka to signal ciritcal errors back to the application
