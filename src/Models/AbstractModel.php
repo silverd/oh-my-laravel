@@ -27,6 +27,11 @@ abstract class AbstractModel extends Model
         return $query->where('status', self::STATUS_ENABLED);
     }
 
+    public function isEnabled()
+    {
+        return $this->status == self::STATUS_ENABLED;
+    }
+
     public function getStatusTextAttribute()
     {
         return static::STATUS_TEXTS[$this->status] ?? '-';
