@@ -455,7 +455,7 @@ class TableauService extends AbstractService
         });
     }
     
-    public function queryProjects(int $pageNumber=1, int $pageSize=1000)
+    public function queryProjects(int $pageNumber = 1, int $pageSize = 1000)
     {
         $url = '/sites/' . $this->config['site_id'] . '/projects?pageSize=' . $pageSize . '&pageNumber=' . $pageNumber;
 
