@@ -454,4 +454,11 @@ class TableauService extends AbstractService
             return in_array($workbook['name'], $workbookNames);
         });
     }
+    
+    public function queryProjects(int $pageNumber = 1, int $pageSize = 1000)
+    {
+        $url = '/sites/' . $this->config['site_id'] . '/projects?pageSize=' . $pageSize . '&pageNumber=' . $pageNumber;
+
+        return $this->requestWithToken('GET', $url);
+    }
 }
