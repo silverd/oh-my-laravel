@@ -195,6 +195,7 @@ class ArrayHelper
         $result = [];
 
         foreach ($array as $key => $value) {
+            $value = (array) $value;
             $result[$value[$field]] = $value;
         }
 
