@@ -149,4 +149,81 @@ class ArrayHelper
 
         return $array;
     }
+
+    /**
+     * 随机取数组中的若干元素
+     *
+     * @param array $array
+     * @param int $rndNum 取几个
+     * @return mixed
+     */
+    public static function rand(array $array, int $rndNum = 1)
+    {
+        if (! $array || ! is_array($array)) {
+            return false;
+        }
+
+        if (count($array) < $rndNum) {
+            return $array;
+        }
+
+        // 随机一个
+        if ($rndNum == 1) {
+            return $array[array_rand($array)];
+        }
+
+        // 随机多个
+        $result = [];
+
+        $randKeys = array_rand($array, $rndNum);
+        foreach ($randKeys as $randKey) {
+            $result[] = $array[$randKey];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 将数组 value 中的某一个字段的值，赋给该数组的 key
+     *
+     * @param array $array
+     * @param string $field
+     * @return array
+     */
+    public static function indexField(array $array, string $field)
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $result[$value[$field]] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * 数组求和、或数组某字段求和
+     *
+     * @param array $array
+     * @param string $field
+     * @return array
+     */
+    public static function sum(array $array, ?string $field = null)
+    {
+        if (! $array) {
+            return 0;
+        }
+
+        if (null === $field) {
+            return array_sum($array);
+        }
+
+        $sum = 0;
+
+        foreach ($array as $value) {
+            $sum += $value[$field];
+        }
+
+        return $sum;
+    }
 }
