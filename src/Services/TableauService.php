@@ -202,9 +202,9 @@ class TableauService extends AbstractService
     }
 
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_workbooks_and_views.htm#query_workbooks_for_site
-    public function queryWorkbooks()
+    public function queryWorkbooks(int $pageNumber = 1, int $pageSize = 1000)
     {
-        $url = '/sites/' . $this->config['site_id'] . '/workbooks';
+        $url = '/sites/' . $this->config['site_id'] . '/workbooks?pageSize=' . $pageSize . '&pageNumber=' . $pageNumber;
 
         return $this->requestWithToken('GET', $url);
     }
