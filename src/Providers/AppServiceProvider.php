@@ -54,7 +54,11 @@ class AppServiceProvider extends ServiceProvider
     // 加载全局业务配置
     protected function initBizConfig()
     {
-        BizConfig::initConfig();
+        try {
+            BizConfig::initConfig();
+        }
+        catch (\Throwable $e) {
+        }
     }
 
     // 一些表单验证规则
