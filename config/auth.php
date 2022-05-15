@@ -116,8 +116,10 @@ return [
      * Basic Auth Account
      */
     'basic_auth' => [
-        'user'     => env('BASIC_AUTH_USER', 'silverd'),
-        'password' => env('BASIC_AUTH_PW', 'ohmyzz'),
+        'default' => [
+            'user'     => env('BASIC_AUTH_USER', 'silverd'),
+            'password' => env('BASIC_AUTH_PW', 'ohmyzz'),
+        ],
     ],
 
 ];
