@@ -30,19 +30,24 @@ class HttpBasicGuard implements Guard
             return false;
         }
 
-        $mappings = config('auth.basic_auth.' . $credentials['field']);
+        $mappings = config('auth.basic_auth.' . $credentials['group']);
+        $mappings = array_column($mappings ?: [], 'password', 'user');
 
-        if ($credentials['user'] != $mappings['user'] || $credentials['password'] != $mappings['password']) {
+        if (! isset($mappings[$credentials['user']])) {
+            return false;
+        }
+
+        if ($credentials['password'] != $mappings[$credentials['user']]) {
             return false;
         }
 
         return true;
     }
 
-    public function basic($field = 'default', $extraConditions = [])
+    public function basic($group = 'default')
     {
         $credentials = [
-            'field'    => $field,
+            'group'    => $group,
             'user'     => $this->request->getUser(),
             'password' => $this->request->getPassword(),
         ];

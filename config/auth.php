@@ -117,8 +117,10 @@ return [
      */
     'basic_auth' => [
         'default' => [
-            'user'     => env('BASIC_AUTH_USER', 'silverd'),
-            'password' => env('BASIC_AUTH_PW', 'ohmyzz'),
+            [
+                'user'     => env('BASIC_AUTH_USER', 'silverd'),
+                'password' => env('BASIC_AUTH_PW', 'ohmyzz'),
+            ],
         ],
     ],
 
