@@ -24,6 +24,11 @@ class HttpBasicGuard implements Guard
         $this->request = $request;
     }
 
+    public function user()
+    {
+        // do nothing
+    }
+
     public function validate(array $credentials = [])
     {
         if (! $credentials['user']) {
