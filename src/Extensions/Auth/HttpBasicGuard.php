@@ -24,11 +24,13 @@ class HttpBasicGuard implements Guard
         $this->request = $request;
     }
 
-    public function validate(array $credentials = [], array $mappings)
+    public function validate(array $credentials = [])
     {
         if (! $credentials['user']) {
             return false;
         }
+
+        $mappings = config('auth.basic_auth.' . $credentials['field']);
 
         if ($credentials['user'] != $mappings['user'] || $credentials['password'] != $mappings['password']) {
             return false;
@@ -40,13 +42,12 @@ class HttpBasicGuard implements Guard
     public function basic($field = 'default', $extraConditions = [])
     {
         $credentials = [
-            'user' => $this->request->getUser(),
+            'field'    => $field,
+            'user'     => $this->request->getUser(),
             'password' => $this->request->getPassword(),
         ];
 
-        $mappings = config('auth.basic_auth.' . $field);
-
-        if (! $this->validate($credentials, $mappings)) {
+        if (! $this->validate($credentials)) {
             throw new UnauthorizedHttpException('Basic', 'Invalid credentials.');
         }
     }
