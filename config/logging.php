@@ -5,7 +5,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Handler\RedisHandler;
-use Monolog\Handler\SwiftMailerHandler;
+use Monolog\Handler\SymfonyMailerHandler;
 use Silverd\OhMyLaravel\Extensions\Logger\Handler\DatabaseHandler;
 use Silverd\OhMyLaravel\Extensions\Logger\Handler\WorkWechatGroupRobotHandler;
 
@@ -117,7 +117,7 @@ $return = [
         // 邮件错误报警
         'errormail' => [
             'driver'    => 'monolog',
-            'handler'   => SwiftMailerHandler::class,
+            'handler'   => SymfonyMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::ERROR,
@@ -130,7 +130,7 @@ $return = [
         // 邮件错误报警（不缓冲）
         'errordaemon' => [
             'driver'    => 'monolog',
-            'handler'   => SwiftMailerHandler::class,
+            'handler'   => SymfonyMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
                 'level'        => Logger::ERROR,
@@ -144,7 +144,7 @@ $return = [
         // 邮件日志记录
         'email' => [
             'driver'    => 'monolog',
-            'handler'   => SwiftMailerHandler::class,
+            'handler'   => SymfonyMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::DEBUG,
@@ -167,7 +167,7 @@ $return = [
         // 队列执行失败
         'queue_failed' => [
             'driver'    => 'monolog',
-            'handler'   => SwiftMailerHandler::class,
+            'handler'   => SymfonyMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::ERROR,
@@ -190,7 +190,7 @@ $return = [
         // 运维预警
         'alarm_hourly' => [
             'driver'    => 'monolog',
-            'handler'   => SwiftMailerHandler::class,
+            'handler'   => SymfonyMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::DEBUG,
@@ -203,7 +203,7 @@ $return = [
         // 运维预警
         'alarm_daily' => [
             'driver'    => 'monolog',
-            'handler'   => SwiftMailerHandler::class,
+            'handler'   => SymfonyMailerHandler::class,
             'formatter' => 'default',
             'with'    => [
                 'level'   => Logger::DEBUG,

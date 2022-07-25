@@ -4,10 +4,14 @@ namespace Silverd\OhMyLaravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Monolog\Handler\RedisHandler;
-use Monolog\Handler\SwiftMailerHandler;
+use Monolog\Handler\SymfonyMailerHandler;
 use Monolog\Formatter\HtmlFormatter;
 use Silverd\OhMyLaravel\Extensions\Logger\LogManager;
 use Silverd\OhMyLaravel\Extensions\Logger\Handler\DeduplicationHandler;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 class LogServiceProvider extends ServiceProvider
 {
@@ -19,20 +23,25 @@ class LogServiceProvider extends ServiceProvider
         });
 
         // 邮件日志处理器
-        $this->app->bind(SwiftMailerHandler::class, function ($app, array $with) {
+        $this->app->bind(SymfonyMailerHandler::class, function ($app, array $with) {
 
             $config = $app['config']['mail'];
+            $smtp = $config['mailers']['smtp'];
 
-            $message = (new \Swift_Message($with['subject']))
-                ->setFrom($config['from']['address'], $config['from']['name'])
-                ->setTo($with['to'])
-                ->setContentType('text/html');
-
-            $mailer = new \Swift_Mailer(
-                $app->make('mail.manager')->createTransport($config['mailers']['smtp'])
+            $transport = Transport::fromDsn(
+                $smtp['transport'] . '://' .
+                rawurlencode($smtp['username']) . ':' . rawurlencode($smtp['password']) . '@' .
+                $smtp['host'] . ':' . $smtp['port']
             );
 
-            $handler = new SwiftMailerHandler($mailer, $message, $with['level']);
+            $mailer = new Mailer($transport);
+
+            $email = (new Email())
+                ->from(new Address($config['from']['address'], $config['from']['name']))
+                ->to(...$with['to'])
+                ->subject($with['subject']);
+
+            $handler = new SymfonyMailerHandler($mailer, $email, $with['level']);
 
             // 以 HTML 格式输出
             $handler->setFormatter(new HtmlFormatter);
