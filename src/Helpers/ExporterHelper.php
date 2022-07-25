@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace Silverd\OhMyLaravel\Helpers;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
