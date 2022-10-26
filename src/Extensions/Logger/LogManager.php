@@ -12,18 +12,21 @@ class LogManager extends BaseLogManager
     {
         $handler = parent::prepareHandler($handler, $config);
 
-        // 额外记录环境变量
-        $handler->pushProcessor(new WebProcessor);
+        if (method_exists($handler, 'pushProcessor')) {
 
-        // 额外记录请求数据
-        $handler->pushProcessor(function (array $record) {
-            $record['extra']['req_sn']  = $GLOBALS['_REQUEST_SN'] ?? '';
-            $record['extra']['headers'] = \Request::header();
-            $record['extra']['gets']    = \Request::all();
-            $record['extra']['posts']   = \Request::post();
-            $record['extra']['cookies'] = \Request::cookie();
-            return $record;
-        });
+            // 额外记录环境变量
+            $handler->pushProcessor(new WebProcessor);
+
+            // 额外记录请求数据
+            $handler->pushProcessor(function (array $record) {
+                $record['extra']['req_sn']  = $GLOBALS['_REQUEST_SN'] ?? '';
+                $record['extra']['headers'] = \Request::header();
+                $record['extra']['gets']    = \Request::all();
+                $record['extra']['posts']   = \Request::post();
+                $record['extra']['cookies'] = \Request::cookie();
+                return $record;
+            });
+        }
 
         return $handler;
     }
