@@ -629,3 +629,19 @@ if (! function_exists('scientificToNum')) {
         return bcmul($a[0], bcpow(10, $a[1]));
     }
 }
+
+if (! function_exists('array_map_recursive')) {
+    function array_map_recursive(callable $func, array $array)
+    {
+        return filter_var($array, \FILTER_CALLBACK, ['options' => $func]);
+    }
+}
+
+if (! function_exists('decimalToNumber')) {
+    function decimalToNumber(array $array, int $precision = 6)
+    {
+        return array_map_recursive(function ($value) use ($precision) {
+            return is_numeric($value) ? round($value, $precision) : $value;
+        }, $array);
+    }
+}
