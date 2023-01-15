@@ -595,3 +595,37 @@ if (! function_exists('bcArraySum')) {
         return $sum;
     }
 }
+
+if (! function_exists('clearZero')) {
+    function clearZero($value, $zero = '')
+    {
+        return floatval($value) == 0 ? $zero : $value;
+    }
+}
+
+if (! function_exists('bcPlus')) {
+    function bcPlus(...$args)
+    {
+        $return = 0;
+
+        foreach ($args as $value) {
+            $return = bcadd($return, $value, 2);
+        }
+
+        return $return;
+    }
+}
+
+if (! function_exists('scientificToNum')) {
+    // 科学计数法转化为数字
+    function scientificToNum(string $num)
+    {
+        if (! is_numeric($num) || stripos($num, 'e') === false) {
+            return $num;
+        }
+
+        $a = explode('e', strtolower($num));
+
+        return bcmul($a[0], bcpow(10, $a[1]));
+    }
+}
