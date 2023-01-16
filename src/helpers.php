@@ -645,3 +645,52 @@ if (! function_exists('decimalToNumber')) {
         }, $array);
     }
 }
+
+if (! function_exists('trimBom')) {
+    // 过滤文本中的BOM头
+    function trimBom(string $str)
+    {
+        $charset[1] = substr($str, 0, 1);
+        $charset[2] = substr($str, 1, 1);
+        $charset[3] = substr($str, 2, 1);
+
+        if (ord($charset[1]) == 239 && ord($charset[2]) == 187 && ord($charset[3]) == 191) {
+            return substr($str, 3);
+        }
+
+        return $str;
+    }
+}
+
+if (! function_exists('mapPagedList')) {
+    function mapPagedList($list, callable $callback)
+    {
+        $stats = is_array($list) ? $list : $list->toArray();
+
+        foreach ($stats['data'] ?? [] as $key => $one) {
+            $stats['data'][$key] = $callback((array) $one);
+        }
+
+        return $stats;
+    }
+}
+
+if (! function_exists('arrayMap')) {
+    function arrayMap(array $array, callable $func)
+    {
+        return array_map($func, $array);
+    }
+}
+
+if (! function_exists('lowerArrayKey')) {
+    function lowerArrayKey(array $one)
+    {
+        $newOne = [];
+
+        foreach ($one as $key => $value) {
+            $newOne[strtolower($key)] = $value;
+        }
+
+        return $newOne;
+    }
+}
