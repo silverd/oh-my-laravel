@@ -227,4 +227,36 @@ class ArrayHelper
 
         return $sum;
     }
+
+    // 末尾增加「合计」行
+    public function appendSumBottom(array $rows, array $dontSumCols = [])
+    {
+        $summary = [];
+
+        foreach ($rows as $row) {
+            $colNo = 0;
+            foreach ($row as $dataIndex => $value) {
+                // 首列
+                if ($colNo == 0) {
+                    $summary[$dataIndex] = '合计';
+                }
+                // 该列无需合计
+                elseif ($dontSumCols[$dataIndex] ?? false || ! isNumeric($value)) {
+                    $summary[$dataIndex] = '';
+                }
+                // 该列需要合计
+                else {
+                    $summary[$dataIndex] = bcadd($summary[$dataIndex] ?? 0, $value ?: 0, 2);
+                }
+                $colNo++;
+            }
+        }
+
+        // 追加在尾部
+        if ($summary) {
+            $rows[] = $summary;
+        }
+
+        return $rows;
+    }
 }

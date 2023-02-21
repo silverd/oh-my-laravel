@@ -694,3 +694,10 @@ if (! function_exists('lowerArrayKey')) {
         return $newOne;
     }
 }
+
+if (! function_exists('isNumeric')) {
+    function isNumeric($value)
+    {
+        return is_numeric($value) && strlen(intval($value)) <= 13;
+    }
+}
