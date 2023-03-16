@@ -209,11 +209,11 @@ if (! function_exists('storageByStream')) {
 
         $imgPath = getStoragePath($dirName, $extension);
 
-        $stoarge = \Storage::disk($disk ?: null);
+        $store = \Storage::disk($disk ?: null);
 
         // 将图片存入 COS
-        $stoarge->put($imgPath, $stream);
-        $ourImgUrl = $stoarge->url($imgPath);
+        $store->put($imgPath, $stream);
+        $ourImgUrl = $store->url($imgPath);
 
         return $ourImgUrl;
     }
@@ -465,7 +465,7 @@ if (! function_exists('guzHttpRequest')) {
     }
 }
 
-if (! function_exists('loggingRequest')) {
+if (! function_exists('loggingInOut')) {
     function loggingInOut(string $channel, array $args, callable $callback)
     {
         // 当前时间
@@ -699,5 +699,20 @@ if (! function_exists('isNumeric')) {
     function isNumeric($value)
     {
         return is_numeric($value) && strlen(intval($value)) <= 13;
+    }
+}
+
+if (! function_exists('filePathLocalized')) {
+    function filePathLocalized(string $dirName, string $filePath, string $extension = '.jpg')
+    {
+        $localPath = $filePath;
+
+        if (strpos($filePath, 'http') === 0) {
+            $fileStream = fetchImg($filePath);
+            $localPath = getStoragePath($dirName, $extension);
+            \Storage::disk('local')->put($localPath, $fileStream);
+        }
+
+        return $localPath;
     }
 }
