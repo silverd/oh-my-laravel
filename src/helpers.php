@@ -705,6 +705,10 @@ if (! function_exists('isNumeric')) {
 if (! function_exists('filePathLocalized')) {
     function filePathLocalized(string $dirName, string $filePath, string $extension = '.jpg')
     {
+        if (strpos($filePath, '/') === 0) {
+            return $filePath;
+        }
+
         $store = \Storage::disk('local');
 
         if (strpos($filePath, 'http') === 0) {
