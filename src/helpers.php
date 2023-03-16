@@ -705,14 +705,14 @@ if (! function_exists('isNumeric')) {
 if (! function_exists('filePathLocalized')) {
     function filePathLocalized(string $dirName, string $filePath, string $extension = '.jpg')
     {
-        $localPath = $filePath;
+        $store = \Storage::disk('local');
 
         if (strpos($filePath, 'http') === 0) {
             $fileStream = fetchImg($filePath);
-            $localPath = getStoragePath($dirName, $extension);
-            \Storage::disk('local')->put($localPath, $fileStream);
+            $filePath = getStoragePath($dirName, $extension);
+            $store->put($filePath, $fileStream);
         }
 
-        return $localPath;
+        return $store->path($filePath);
     }
 }
