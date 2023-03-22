@@ -228,8 +228,8 @@ class ArrayHelper
         return $sum;
     }
 
-    // 末尾增加「合计」行
-    public function appendSumBottom(array $rows, array $dontSumCols = [])
+    // 计算「合计」行
+    public function buildSumBottom(array $rows, array $dontSumCols = [])
     {
         $summary = [];
 
@@ -252,8 +252,14 @@ class ArrayHelper
             }
         }
 
-        // 追加在尾部
-        if ($summary) {
+        return $summary;
+    }
+
+    // 末尾增加「合计」行
+    public function appendSumBottom(array $rows, array $dontSumCols = [])
+    {
+        if ($summary = self::buildSumBottom($rows, $dontSumCols)) {
+            // 追加在尾部
             $rows[] = $summary;
         }
 
