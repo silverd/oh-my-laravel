@@ -671,6 +671,10 @@ if (! function_exists('mapPagedList')) {
             $stats['data'][$key] = $callback((array) $one);
         }
 
+        if (isset($stats['bottom'])) {
+            $stats['bottom'] = $callback((array) $stats['bottom']);
+        }
+
         return $stats;
     }
 }
