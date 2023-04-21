@@ -242,7 +242,7 @@ class ArrayHelper
                 }
                 // 该列无需合计
                 elseif ($dontSumCols[$dataIndex] ?? false || ! isNumeric($value)) {
-                    $summary[$dataIndex] = '';
+                    $summary[$dataIndex] = '-';
                 }
                 // 该列需要合计
                 else {
