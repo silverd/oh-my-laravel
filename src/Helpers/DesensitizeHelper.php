@@ -17,11 +17,14 @@ class DesensitizeHelper
 
                 preg_match('/\d+/', $string, $matched);
 
-                $string = $matched[0];
-                $length = strlen($string);
+                if ($matched) {
 
-                if ($length == 15) {
-                    return \Str::mask($string, '*', -3, 3);
+                    $string = $matched[0];
+                    $length = strlen($string);
+
+                    if ($length == 15) {
+                        return \Str::mask($string, '*', -3, 3);
+                    }
                 }
 
                 return \Str::mask($string, '*', -4, 4);
