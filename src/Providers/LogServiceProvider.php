@@ -4,6 +4,7 @@ namespace Silverd\OhMyLaravel\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Monolog\Handler\RedisHandler;
+use Monolog\Handler\MongoDBHandler;
 use Monolog\Handler\SymfonyMailerHandler;
 use Monolog\Formatter\HtmlFormatter;
 use Silverd\OhMyLaravel\Extensions\Logger\LogManager;
@@ -59,6 +60,7 @@ class LogServiceProvider extends ServiceProvider
             }
 
             return $handler;
+
         });
 
         // Redis 日志处理器
@@ -73,6 +75,21 @@ class LogServiceProvider extends ServiceProvider
                 true,
                 $with['cap_size']
             );
+
+        });
+
+        // MongoDB 日志处理器
+        $this->app->bind(MongoDBHandler::class, function ($app, array $with) {
+
+            $mongodb = \DB::connection($with['connection'] ?? 'mongodb')->getMongoClient();
+
+            return new MongoDBHandler(
+                $mongodb,
+                $with['database'],
+                $with['collection'],
+                $with['level']
+            );
+
         });
     }
 }
