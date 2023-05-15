@@ -99,4 +99,23 @@ class StringHelper
 
         return $newStr;
     }
+
+    // 提取干净的 JSON 字符串
+    public static function extractJson(string $str)
+    {
+        $regex = <<<EOT
+            /(\{(?:(?>[^{}"'\/]+)|(?>"(?:(?>[^\\"]+)|\\.)*")|(?>'(?:(?>[^\\']+)|\\.)*')|(?>\/\/.*\n)|(?>\/\*.*?\*\/)|(?-1))*\})/
+        EOT;
+
+        $str = str_replace(['\n' | '\r'], PHP_EOL, $str);
+
+        // 不含 JSON
+        if (! preg_match($regex, $str, $matches)) {
+            return false;
+        }
+
+        $str = $matches[0] ?? '';
+
+        return json_decode($str, true);
+    }
 }
