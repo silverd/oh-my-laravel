@@ -17,7 +17,9 @@ class CreateConfigBiz extends Migration
             $table->id();
             $table->string('key', 50);
             $table->text('value')->nullable();
+            $table->tinyInteger('value_type')->unsigned()->default(1);
             $table->string('remark', 100)->nullable();
+            $table->json('scopes')->nullable();
             $table->timestamps();
         });
     }

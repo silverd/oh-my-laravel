@@ -6,6 +6,21 @@ class BizConfig extends AbstractModel
 {
     protected $table = 'config_biz';
 
+    protected $casts = [
+        'scopes' => 'array',
+    ];
+
+    const
+        VALUE_TYPE_INPUT    = 1,
+        VALUE_TYPE_TEXTAREA = 2,
+        VALUE_TYPE_EDITOR   = 3;
+
+    const VALUE_TYPES = [
+        self::VALUE_TYPE_INPUT    => '输入框',
+        self::VALUE_TYPE_TEXTAREA => '文本域',
+        self::VALUE_TYPE_EDITOR   => '富文本',
+    ];
+
     protected static function booted()
     {
         $callback = function () {
@@ -42,5 +57,15 @@ class BizConfig extends AbstractModel
         foreach (static::fetchAll() as $key => $value) {
             config(['biz.' . $key => $value]);
         }
+    }
+
+    public function getScopesAttribute($value)
+    {
+        return is_string($value) ? $this->fromJson($value) : (array) $value;
+    }
+
+    public function setScopesAttribute($value)
+    {
+        $this->attributes['scopes'] = $this->asJson($value ? explode(',', $value) : []);
     }
 }
