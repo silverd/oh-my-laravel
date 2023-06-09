@@ -724,3 +724,24 @@ if (! function_exists('filePathLocalized')) {
         return $store->path($filePath);
     }
 }
+
+if (! function_exists('isShouldRunButNot')) {
+    // 是否轮到它该运行了，但却没运行
+    function isShouldRunButNot(string $cronExpr, string $lastRunAt)
+    {
+        $cron = \Cron\CronExpression::factory($cronExpr);
+
+        // 应运行时间
+        $dueRunAt = $cron->getNextRunDate(date('Y-m-d'))->format('Y-m-d H:i:s');
+
+        // 今日无需运行
+        if (! \Carbon\Carbon::parse($dueRunAt)->isToday()) {
+            return false;
+        }
+
+        return [
+            $lastRunAt >= $dueRunAt,
+            $dueRunAt,
+        ];
+    }
+}
