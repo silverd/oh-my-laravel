@@ -6,7 +6,7 @@ class SSEHelper
 {
     // 格式化 SSE 输出
     // @see https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html
-    public static function ssePrint(string $str, int $padding = 0, $lastEventId = null)
+    public static function print(string $str, int $padding = 0, $lastEventId = null)
     {
         $data = \Str::startsWith($str, ['[DONE]', '[ERROR]']) ? $str : jsonEncode(['content' => $str]);
 
@@ -27,16 +27,16 @@ class SSEHelper
         flush();
     }
 
-    public static function ssePrints(?string $str, int $padding = 4096)
+    public static function prints(?string $str, int $padding = 4096)
     {
         if ($str) {
             foreach (preg_split('/(?<!^)(?!$)/u', (string) $str) as $word) {
-                ssePrint($word, $padding);
+                self::print($word, $padding);
             }
         }
     }
 
-    public static function sseRequest(string $url, string $method, array $posts, array $headers, callable $streamFunc)
+    public static function request(string $url, string $method, array $posts, array $headers, callable $streamFunc)
     {
         if ($method == 'GET') {
             $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($posts);
@@ -90,7 +90,7 @@ class SSEHelper
         return $response;
     }
 
-    public static function respStream(callable $callback)
+    public static function response(callable $callback)
     {
         ini_set('output_buffering', 'Off');
         ini_set('max_execution_time', 300);
