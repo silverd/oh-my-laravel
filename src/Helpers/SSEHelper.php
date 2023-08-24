@@ -36,7 +36,7 @@ class SSEHelper
         }
     }
 
-    public static function request(string $url, string $method, array $posts, array $headers, callable $streamFunc)
+    public static function request(string $url, string $method, array $posts, array $headers, callable $streamFunc, array $opts = [])
     {
         if ($method == 'GET') {
             $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($posts);
@@ -57,8 +57,8 @@ class SSEHelper
             CURLOPT_URL            => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => '',
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_MAXREDIRS      => $opts['retries'] ?? 10,
+            CURLOPT_TIMEOUT        => $opts['timeout'] ?? 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_CUSTOMREQUEST  => $method,
             CURLOPT_HTTPHEADER     => $headers,
