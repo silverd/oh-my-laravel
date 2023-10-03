@@ -45,11 +45,6 @@ class SSEHelper
         array $opts = []
     )
     {
-        if ($method == 'GET') {
-            $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($posts);
-            $posts = [];
-        }
-
         $writeFunc = function ($curl, $data) use ($streamFunc) {
 
             $streamFunc($data);
@@ -73,7 +68,7 @@ class SSEHelper
             CURLOPT_POSTFIELDS     => $postFields,
         ];
 
-        if (! $posts) {
+        if (! $postFields) {
             unset($params[CURLOPT_POSTFIELDS]);
         }
 
