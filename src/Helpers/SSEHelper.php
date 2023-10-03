@@ -36,7 +36,14 @@ class SSEHelper
         }
     }
 
-    public static function request(string $url, string $method, array $posts, array $headers, callable $streamFunc, array $opts = [])
+    public static function request(
+        string $url,
+        string $method,
+        string $postFields,
+        array $headers,
+        callable $streamFunc,
+        array $opts = []
+    )
     {
         if ($method == 'GET') {
             $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($posts);
@@ -63,7 +70,7 @@ class SSEHelper
             CURLOPT_CUSTOMREQUEST  => $method,
             CURLOPT_HTTPHEADER     => $headers,
             CURLOPT_WRITEFUNCTION  => $writeFunc,
-            CURLOPT_POSTFIELDS     => json_encode($posts),
+            CURLOPT_POSTFIELDS     => $postFields,
         ];
 
         if (! $posts) {
