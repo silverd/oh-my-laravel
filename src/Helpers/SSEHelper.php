@@ -40,11 +40,17 @@ class SSEHelper
         string $url,
         string $method,
         string $postFields,
-        array $headers,
+        array $headerKvs,
         callable $streamFunc,
         array $opts = []
     )
     {
+        $headers = [];
+
+        foreach ($headerKvs as $k => $v) {
+            $headers[] = $k . ':' . $v;
+        }
+
         $writeFunc = function ($curl, $data) use ($streamFunc) {
 
             $streamFunc($data);
