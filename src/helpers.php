@@ -373,6 +373,27 @@ if (! function_exists('_T')) {
     }
 }
 
+if (! function_exists('_S')) {
+    // 替换字符串中的变量
+    function _S(string $message, array $vars = [])
+    {
+        if (! $vars) {
+            return $message;
+        }
+
+        $keys = $values = [];
+
+        foreach ($vars as $key => $value) {
+            if (is_scalar($value)) {
+                $keys[] = '${' . $key . '}';
+                $values[] = $value;
+            }
+        }
+
+        return str_replace($keys, $values, $message);
+    }
+}
+
 if (! function_exists('getFullException')) {
     function getFullException(\Throwable $e)
     {
