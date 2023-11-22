@@ -5,6 +5,7 @@ namespace Silverd\OhMyLaravel\Extensions\Logger\Handler;
 use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\QueryException;
 
 /**
  * 日志记录到数据库（扩展 Monolog）
@@ -18,6 +19,7 @@ class DatabaseHandler extends AbstractProcessingHandler
 {
     protected $connection;
     protected $table;
+    protected $rotate;
 
     public function __construct(
         string $table,
@@ -27,43 +29,57 @@ class DatabaseHandler extends AbstractProcessingHandler
         $bubble = true
     ) {
         $this->connection = $connection;
-        $this->table = $table . ($rotate ? '_' . date($rotate) : '');
-
-        // 创建日志表
-        $this->checkCreateTable();
+        $this->table      = $table;
+        $this->rotate     = $rotate;
 
         parent::__construct($level, $bubble);
     }
 
     protected function write(array $record): void
     {
-        \DB::connection($this->connection)->table($this->table)->insert([
-            'level'      => $record['level'],
-            'level_name' => $record['level_name'],
-            'channel'    => $record['channel'],
-            'message'    => $record['message'],
-            'context'    => jsonEncode($record['context']),
-            'extra'      => jsonEncode($record['extra']),
-            'created_at' => $record['datetime']->format('Y-m-d H:i:s'),
-        ]);
+        $table = $this->table . ($this->rotate ? '_' . date($this->rotate) : '');
+
+        try {
+            \DB::connection($this->connection)->table($table)->insert([
+                'level'      => $record['level'],
+                'level_name' => $record['level_name'],
+                'channel'    => $record['channel'],
+                'message'    => $record['message'],
+                'context'    => jsonEncode($record['context']),
+                'extra'      => jsonEncode($record['extra']),
+                'created_at' => $record['datetime']->format('Y-m-d H:i:s'),
+            ]);
+        }
+        catch (QueryException $e) {
+            // 表不存在
+            if ($e->getCode() == '42S02') {
+                // 建表后重试
+                $this->createTable($table)->write($record);
+            }
+            else {
+                throw $e;
+            }
+        }
     }
 
-    protected function checkCreateTable()
+    protected function createTable(string $table)
     {
         // 创建日志表
-        if (! \Schema::connection($this->connection)->hasTable($this->table)) {
-            \Schema::connection($this->connection)->create($this->table, function (Blueprint $table) {
-                $table->increments('id')->unsigned();
-                $table->integer('level')->unsigned();
-                $table->string('level_name');
-                $table->string('channel');
-                $table->longText('message');
-                $table->longText('context');
-                $table->longText('extra');
-                $table->timestamp('created_at')->nullable();
-                $table->charset = 'utf8mb4';
-                $table->collation = 'utf8mb4_unicode_ci';
+        if (! \Schema::connection($this->connection)->hasTable($table)) {
+            \Schema::connection($this->connection)->create($table, function (Blueprint $tbl) {
+                $tbl->increments('id')->unsigned();
+                $tbl->integer('level')->unsigned();
+                $tbl->string('level_name');
+                $tbl->string('channel');
+                $tbl->longText('message');
+                $tbl->longText('context');
+                $tbl->longText('extra');
+                $tbl->timestamp('created_at')->nullable();
+                $tbl->charset = 'utf8mb4';
+                $tbl->collation = 'utf8mb4_unicode_ci';
             });
         }
+
+        return $this;
     }
 }
