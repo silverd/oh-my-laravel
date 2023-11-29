@@ -394,6 +394,20 @@ if (! function_exists('_S')) {
     }
 }
 
+if (! function_exists('getSimpleException')) {
+    function getSimpleException(\Throwable $e)
+    {
+        $message = $e->getMessage();
+
+        if (! $e instanceof \Silverd\OhMyLaravel\Exceptions\UserException) {
+            // 系统级异常输出具体位置
+            $message .= '@' . $e->getFile() . ':' . $e->getLine();
+        }
+
+        return $message;
+    }
+}
+
 if (! function_exists('getFullException')) {
     function getFullException(\Throwable $e)
     {
