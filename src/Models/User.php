@@ -26,15 +26,18 @@ class User extends AbstractModel implements AuthenticatableContract
         return $this->hasMany(UserStatsDaily::class, 'uid');
     }
 
-    // 我的每日数据统计（累加）
-    public function incrStatsDaily(array $incrs, array $updated = [])
+    public function statsToday()
     {
         $pk = [
             'today' => date('Y-m-d'),
         ];
 
-        return $this->statsDaily()
-            ->firstOrCreate($pk)
-            ->increments($incrs, $updated);
+        return $this->statsDaily()->firstOrCreate($pk);
+    }
+
+    // 我的每日数据统计（累加）
+    public function incrStatsDaily(array $incrs, array $updated = [])
+    {
+        return $this->statsToday()->increments($incrs, $updated);
     }
 }
