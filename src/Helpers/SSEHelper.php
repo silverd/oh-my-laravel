@@ -8,7 +8,7 @@ class SSEHelper
     // @see https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html
     public static function print(string $str, int $padding = 0, $lastEventId = null)
     {
-        $data = \Str::startsWith($str, ['[DONE]', '[ERROR]']) ? $str : jsonEncode(['content' => $str]);
+        $data = \Str::startsWith($str, ['[DONE]', '[ERROR]', '[START]', '[X:']) ? $str : jsonEncode(['content' => $str]);
 
         $message = [
             'id'   => $lastEventId,
