@@ -5,6 +5,7 @@
 namespace Silverd\OhMyLaravel\Console\Commands\Utils;
 
 use Illuminate\Console\Command;
+use Carbon\Exceptions\InvalidFormatException;
 
 class FlushDbLogs extends Command
 {
@@ -29,8 +30,13 @@ class FlushDbLogs extends Command
 
             $date = '20' . substr($tableName, -6);
 
-            // 七天内日志保留
-            if (now()->diffInDays($date) <= $maxDays) {
+            try {
+                // 七天内日志保留
+                if (now()->diffInDays($date) <= $maxDays) {
+                    continue;
+                }
+            }
+            catch (InvalidFormatException $e) {
                 continue;
             }
 
