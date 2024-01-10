@@ -421,6 +421,21 @@ if (! function_exists('getFullException')) {
     }
 }
 
+if (! function_exists('humanExceptionText')) {
+    function humanExceptionText(\Throwable $e)
+    {
+        if ($e instanceof \Silverd\OhMyLaravel\Exceptions\UserException) {
+            return $e->getMessage();
+        }
+
+        if (\App::environment('production')) {
+            return '我的脑子已经转不过来了，请稍候再提问 ...';
+        }
+
+        return $e->getMessage() . '@' . $e->getFile() . ':' . $e->getLine();
+    }
+}
+
 if (! function_exists('guzHttpRequest')) {
     function guzHttpRequest(
         string $url,
@@ -778,20 +793,5 @@ if (! function_exists('isShouldRunButNot')) {
             $lastRunAt >= $dueRunAt,
             $dueRunAt,
         ];
-    }
-}
-
-if (! function_exists('humanExceptionText')) {
-    function humanExceptionText(\Throwable $e)
-    {
-        if ($e instanceof \Silverd\OhMyLaravel\Exceptions\UserException) {
-            return $e->getMessage();
-        }
-
-        if (\App::environment('production')) {
-            return '我的脑子已经转不过来了，请稍候再提问 ...';
-        }
-
-        return $e->getMessage() . '@' . $e->getFile() . ':' . $e->getLine();
     }
 }
