@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // 请求流水号
-        $GLOBALS['_REQUEST_SN'] = date('Ymd') . '-' . \Str::orderedUuid();
+        $GLOBALS['_REQUEST_SN'] = $this->getRequestSn() ?? date('Ymd') . '-' . \Str::orderedUuid();
 
         // 响应宏
         \Response::macro('output', function (string $message, $code = 0, $data = null) {
@@ -49,6 +49,19 @@ class AppServiceProvider extends ServiceProvider
 
         // 集合的一些扩展方法
         $this->initCollectionMarco();
+    }
+
+    protected function getRequestSn()
+    {
+        if (! $requestSn = \Request::header('x-request-sn')) {
+            return null;
+        }
+
+        if (! preg_match('/^[\w\-]{45}$/', $requestSn)) {
+            return null;
+        }
+
+        return $requestSn;
     }
 
     // 加载全局业务配置
