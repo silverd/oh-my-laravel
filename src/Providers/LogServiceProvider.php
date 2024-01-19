@@ -16,7 +16,7 @@ use Symfony\Component\Mime\Address;
 
 class LogServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function register()
     {
         // 覆盖原有的日志工厂
         $this->app->singleton('log', function ($app) {
