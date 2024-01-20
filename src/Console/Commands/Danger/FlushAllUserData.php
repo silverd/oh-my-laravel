@@ -9,6 +9,7 @@
 namespace Silverd\OhMyLaravel\Console\Commands\Danger;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Redis;
 
 class FlushAllUserData extends Command
 {
@@ -53,7 +54,7 @@ class FlushAllUserData extends Command
 
         foreach ($dbs as $db => $config) {
             if (isset($config['host'])) {
-                \Redis::connection($db)->flushDb();
+                Redis::connection($db)->flushDb();
             }
         }
     }

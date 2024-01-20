@@ -3,6 +3,7 @@
 namespace Silverd\OhMyLaravel\Helpers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redis;
 
 class ToolsHelper
 {
@@ -29,7 +30,7 @@ class ToolsHelper
      */
     public static function createSn(string $namespace = 'default', string $prefix = '', int $length = 8)
     {
-        $insertId = \Redis::incr('FlowSn:' . ucfirst($namespace));
+        $insertId = Redis::incr('FlowSn:' . ucfirst($namespace));
 
         $suffix = self::getSnSuffix();
 
@@ -41,12 +42,12 @@ class ToolsHelper
     {
         $cacheKey = 'ShortSn:' . ucfirst($namespace);
 
-        $insertId = \Redis::incr($cacheKey);
+        $insertId = Redis::incr($cacheKey);
 
         // 超过上限则自动重置
         if (strlen($insertId) > $length) {
             $insertId = 1;
-            \Redis::set($cacheKey, $insertId);
+            Redis::set($cacheKey, $insertId);
         }
 
         return str_pad($insertId, $length, '0', STR_PAD_LEFT);
