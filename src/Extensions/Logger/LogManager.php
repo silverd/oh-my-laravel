@@ -4,6 +4,7 @@ namespace Silverd\OhMyLaravel\Extensions\Logger;
 
 use Monolog\Handler\HandlerInterface;
 use Monolog\Processor\WebProcessor;
+use Monolog\LogRecord;
 use Illuminate\Log\LogManager as BaseLogManager;
 
 class LogManager extends BaseLogManager
