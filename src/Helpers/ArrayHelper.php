@@ -222,7 +222,7 @@ class ArrayHelper
         $sum = 0;
 
         foreach ($array as $value) {
-            $sum += $value[$field];
+            $sum += $value[$field] ?? 0;
         }
 
         return $sum;

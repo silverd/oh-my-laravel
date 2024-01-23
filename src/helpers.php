@@ -446,6 +446,8 @@ if (! function_exists('guzHttpRequest')) {
         string $respType = 'JSON',
         array $guzConfig = []
     ) {
+        $headers['x-request-sn'] = $GLOBALS['_REQUEST_SN'];
+
         // @see http://guzzle-cn.readthedocs.io/zh_CN/latest
         $http = new \GuzzleHttp\Client(['verify' => false, 'headers' => $headers] + $guzConfig);
 
