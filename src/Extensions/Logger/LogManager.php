@@ -19,7 +19,7 @@ class LogManager extends BaseLogManager
             $handler->pushProcessor(new WebProcessor);
 
             // 额外记录请求数据
-            $handler->pushProcessor(function (array $record) {
+            $handler->pushProcessor(function (LogRecord $record) {
                 $record['extra']['req_sn']  = $GLOBALS['_REQUEST_SN'] ?? '';
                 $record['extra']['headers'] = \Request::header();
                 $record['extra']['gets']    = \Request::all();
