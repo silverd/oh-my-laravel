@@ -210,6 +210,40 @@ class ToolsHelper
         return $completed;
     }
 
+    // 填充年份
+    public static function fillYear(
+        string $startYear,
+        string $endYear,
+        array $data,
+        callable $callback,
+        bool $isAsc = false
+    )
+    {
+        $completed  = [];
+
+        $startYear = Carbon::parse($startYear)->startOfYear();
+        $endYear   = Carbon::parse($endYear)->startOfYear();
+
+        // 升序
+        if ($isAsc) {
+            while ($startYear->lte($endYear)) {
+                $Year = $startYear->format('Y');
+                $completed[] = $callback($Year, $data[$Year] ?? null);
+                $startYear->addYear();
+            }
+        }
+        // 倒序
+        else {
+            while ($endYear->gte($startYear)) {
+                $Year = $endYear->format('Y');
+                $completed[] = $callback($Year, $data[$Year] ?? null);
+                $endYear->subYear();
+            }
+        }
+
+        return $completed;
+    }
+
     // 按日期合并宽表（各结果集的列数可能不一致）
     public static function mergeMultiByToday(array $results, string $startDate, string $endDate)
     {
