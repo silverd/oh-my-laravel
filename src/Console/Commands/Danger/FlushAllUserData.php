@@ -20,7 +20,8 @@ class FlushAllUserData extends Command
     public function handle()
     {
         if (\App::environment('production')) {
-            return $this->error('生产环境禁止执行本操作');
+            $this->error('生产环境禁止执行本操作');
+            return false;
         }
 
         if (! $this->confirm($this->description . '吗？该操作不可逆！')) {

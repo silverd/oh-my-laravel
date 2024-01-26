@@ -159,7 +159,7 @@ class ArrayHelper
      */
     public static function rand(array $array, int $rndNum = 1)
     {
-        if (! $array || ! is_array($array)) {
+        if (! $array) {
             return false;
         }
 
@@ -206,8 +206,8 @@ class ArrayHelper
      * 数组求和、或数组某字段求和
      *
      * @param array $array
-     * @param string $field
-     * @return array
+     * @param string|null $field
+     * @return int
      */
     public static function sum(array $array, ?string $field = null)
     {

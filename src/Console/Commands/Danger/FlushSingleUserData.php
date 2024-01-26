@@ -22,7 +22,8 @@ class FlushSingleUserData extends Command
     public function handle()
     {
         if (\App::environment('production')) {
-            return $this->error('生产环境禁止执行本操作');
+            $this->error('生产环境禁止执行本操作');
+            return false;
         }
 
         if ($mobile = $this->option('mobile')) {
@@ -32,11 +33,13 @@ class FlushSingleUserData extends Command
             $user = $this->getUserByUid($uid);
         }
         else {
-            return $this->error('UID 和手机号两者必填其一');
+            $this->error('UID 和手机号两者必填其一');
+            return false;
         }
 
         if (! $user) {
-            return $this->error('找不到目标用户');
+            $this->error('找不到目标用户');
+            return false;
         }
 
         if (! $this->confirm('确定要删除用户 (UID=' . $user->id . '|手机号=' . $user->mobile . ') 吗？该操作不可逆！')) {

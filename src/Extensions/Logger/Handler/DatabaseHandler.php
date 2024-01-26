@@ -2,7 +2,8 @@
 
 namespace Silverd\OhMyLaravel\Extensions\Logger\Handler;
 
-use Monolog\Logger;
+use Monolog\Level;
+use Monolog\LogRecord;
 use Monolog\Handler\AbstractProcessingHandler;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\QueryException;
@@ -23,7 +24,7 @@ class DatabaseHandler extends AbstractProcessingHandler
 
     public function __construct(
         string $table,
-        int $level = Logger::INFO,
+        int | Level $level = Level::Info,
         string $rotate = '',
         ?string $connection = null,
         $bubble = true
@@ -35,19 +36,20 @@ class DatabaseHandler extends AbstractProcessingHandler
         parent::__construct($level, $bubble);
     }
 
-    protected function write(array $record): void
+    protected function write(LogRecord $record): void
     {
+
         $table = $this->table . ($this->rotate ? '_' . date($this->rotate) : '');
 
         try {
             \DB::connection($this->connection)->table($table)->insert([
-                'level'      => $record['level'],
-                'level_name' => $record['level_name'],
-                'channel'    => $record['channel'],
-                'message'    => $record['message'],
-                'context'    => jsonEncode($record['context']),
-                'extra'      => jsonEncode($record['extra']),
-                'created_at' => $record['datetime']->format('Y-m-d H:i:s'),
+                'level'      => $record->level,
+                'level_name' => $record->level->getName(),
+                'channel'    => $record->channel,
+                'message'    => $record->message,
+                'context'    => jsonEncode($record->context),
+                'extra'      => jsonEncode($record->extra),
+                'created_at' => $record->datetime->format('Y-m-d H:i:s'),
             ]);
         }
         catch (QueryException $e) {
