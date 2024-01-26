@@ -190,7 +190,7 @@ class TableauService extends AbstractService
     }
 
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_users_and_groups.htm#remove_user_from_site
-    public function removeUserFromSite(string $mapAssetsToUserId)
+    public function removeUserFromSite(string $mapAssetsToUserId, string $userId)
     {
         $params = [
             'mapAssetsTo' => $mapAssetsToUserId,
@@ -374,7 +374,7 @@ class TableauService extends AbstractService
         return $this->requestWithToken('DELETE', '/sites/' . $this->config['site_id'] . '/subscriptions/' . $subscriptionId);
     }
 
-    public function updateSubscription(string $subscriptionId)
+    public function updateSubscription(string $subscriptionId, array $params)
     {
         $updated = $this->getParams($params, [
             'subject',
@@ -448,7 +448,7 @@ class TableauService extends AbstractService
     {
         $workbooks = $this->queryWorkbooks();
 
-        $workbooks = $schedules['workbooks']['workbook'];
+        $workbooks = $workbooks['workbooks']['workbook'];
 
         return array_filter($workbooks, function ($workbook) use ($workbookNames) {
             return in_array($workbook['name'], $workbookNames);
