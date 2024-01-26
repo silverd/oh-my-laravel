@@ -444,11 +444,11 @@ class TableauService extends AbstractService
         });
     }
 
-    public function getWorkbooksByNames(array $workbookNames, array $schedules)
+    public function getWorkbooksByNames(array $workbookNames)
     {
         $workbooks = $this->queryWorkbooks();
 
-        $workbooks = $schedules['workbooks']['workbook'];
+        $workbooks = $workbooks['workbooks']['workbook'];
 
         return array_filter($workbooks, function ($workbook) use ($workbookNames) {
             return in_array($workbook['name'], $workbookNames);
