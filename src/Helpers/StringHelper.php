@@ -9,7 +9,7 @@ class StringHelper
      *
      * @param int $length
      * @param bool $numeric 是否为纯数字
-     *
+     * @param string $sourceStr
      * @return string
      */
     public static function randCode(int $length, bool $numeric = false, string $sourceStr = '')
@@ -19,7 +19,7 @@ class StringHelper
         }
         else {
             $hash  = '';
-            $chars = $sourceStr ? $sourceStr : '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+            $chars = $sourceStr ?: '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
             $max   = strlen($chars) - 1;
             for ($i = 0; $i < $length; $i++) {
                 $hash .= $chars[mt_rand(0, $max)];

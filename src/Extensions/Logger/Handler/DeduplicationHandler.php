@@ -2,7 +2,7 @@
 
 namespace Silverd\OhMyLaravel\Extensions\Logger\Handler;
 
-use Monolog\Logger;
+use Monolog\Level;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\BufferHandler;
 use Monolog\Formatter\FormatterInterface;
@@ -16,7 +16,7 @@ class DeduplicationHandler extends BufferHandler
     public function __construct(
         HandlerInterface $handler,
         CacheRepository $cache,
-        int $level = Logger::ERROR,
+        int | Level $level = Level::Error,
         int $time = 60,
         int $bufferLimit = 0,
         bool $flushOnOverflow = true,

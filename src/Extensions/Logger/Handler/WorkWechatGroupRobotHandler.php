@@ -2,7 +2,8 @@
 
 namespace Silverd\OhMyLaravel\Extensions\Logger\Handler;
 
-use Monolog\Logger;
+use Monolog\Level;
+use Monolog\LogRecord;
 use Monolog\Handler\AbstractProcessingHandler;
 
 /**
@@ -18,7 +19,7 @@ class WorkWechatGroupRobotHandler extends AbstractProcessingHandler
     protected $title;
     protected $sendKey;
 
-    public function __construct(string $title, string $sendKey, $level = Logger::ERROR, $bubble = true)
+    public function __construct(string $title, string $sendKey, $level = Level::Error, $bubble = true)
     {
         parent::__construct($level, $bubble);
 
@@ -26,7 +27,7 @@ class WorkWechatGroupRobotHandler extends AbstractProcessingHandler
         $this->sendKey = $sendKey;
     }
 
-    protected function write(array $record): void
+    protected function write(LogRecord $record): void
     {
         $url = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=' . $this->sendKey;
 
@@ -35,7 +36,7 @@ class WorkWechatGroupRobotHandler extends AbstractProcessingHandler
         $response = \Http::post($url, [
             'msgtype' => 'text',
             'text' => [
-                'content' => $title . ' / ' . ($record['extra']['req_sn'] ?? '') . ' / ' . $record['message'],
+                'content' => $title . ' / ' . ($record->extra['req_sn'] ?? '') . ' / ' . $record->message,
             ],
         ]);
     }

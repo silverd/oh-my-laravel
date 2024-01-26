@@ -33,7 +33,7 @@ class AdvTokenGuard extends TokenGuard
     /**
      * Attempt to authenticate the user using the given credentials and return the token.
      *
-     * @return bool|Token
+     * @return bool|string
      */
     public function attempt(array $credentials = [])
     {

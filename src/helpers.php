@@ -781,7 +781,7 @@ if (! function_exists('isShouldRunButNot')) {
     // 是否轮到它该运行了，但却没运行
     function isShouldRunButNot(string $cronExpr, string $lastRunAt)
     {
-        $cron = \Cron\CronExpression::factory($cronExpr);
+        $cron = new \Cron\CronExpression($cronExpr);
 
         // 应运行时间
         $dueRunAt = $cron->getNextRunDate(date('Y-m-d'))->format('Y-m-d H:i:s');

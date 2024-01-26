@@ -11,7 +11,7 @@ class Producer extends AbstractService
 
     public function produce(string $topic, string $payload, ?callable $errorCb = null, ?callable $drMsgCb = null)
     {
-        return $this->produces($topic, [$payload], $errorCb, $drMsgCb);
+        $this->produces($topic, [$payload], $errorCb, $drMsgCb);
     }
 
     public function produces(string $topic, array $payloads, ?callable $errorCb = null, ?callable $drMsgCb = null)

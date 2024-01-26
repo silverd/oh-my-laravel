@@ -3,10 +3,11 @@
 namespace Silverd\OhMyLaravel\Extensions\Logger\Formatter;
 
 use Monolog\Formatter\NormalizerFormatter;
+use Monolog\LogRecord;
 
 class SimpleJsonFormatter extends NormalizerFormatter
 {
-    public function format(array $record): string
+    public function format(LogRecord $record): string
     {
         $normalized = $this->normalize($record);
 
