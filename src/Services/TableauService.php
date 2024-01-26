@@ -190,7 +190,7 @@ class TableauService extends AbstractService
     }
 
     // @see https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref_users_and_groups.htm#remove_user_from_site
-    public function removeUserFromSite(string $mapAssetsToUserId, int $userId)
+    public function removeUserFromSite(string $mapAssetsToUserId, string $userId)
     {
         $params = [
             'mapAssetsTo' => $mapAssetsToUserId,
