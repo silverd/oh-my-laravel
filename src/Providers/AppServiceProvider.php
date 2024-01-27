@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
             }
 
             // 总耗时
-            defined('LARAVEL_START') or define('LARAVEL_START', 0);
             $elapsed = round(microtime(true) - LARAVEL_START, 3);
 
             return toJson([
