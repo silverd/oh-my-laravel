@@ -34,7 +34,10 @@
                 "Silverd\\OhMyLaravel\\Providers\\HorizonServiceProvider"
             ],
             "aliases": {
-            }
+            },
+            "dont-discover": [
+                "mnabialek/laravel-sql-logger"
+            ]
         }
     },
     "minimum-stability" : "stable",
