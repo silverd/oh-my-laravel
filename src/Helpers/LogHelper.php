@@ -72,7 +72,7 @@ class LogHelper
 
         foreach ($channels as $channel) {
             $return[$channel] = [
-                'driver'    => 'mongodb_log',
+                'driver'    => 'monolog',
                 'handler'   => MongoDBHandler::class,
                 'formatter' => MongoDBFormatter::class,
                 'with'      => [
