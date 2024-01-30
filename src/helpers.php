@@ -468,10 +468,10 @@ if (! function_exists('guzHttpRequest')) {
         $nowMs = microtime(true);
 
         // 请求流水号
-        $requestSn = \Str::orderedUuid();
+        $reqNo = \Str::orderedUuid();
 
         // 记录请求报文
-        \Log::channel('api_request')->info('req:' . $requestSn, [
+        \Log::channel('api_request')->info('req:' . $reqNo, [
             'req_url'  => $url,
             'req_body' => $data,
         ]);
@@ -484,7 +484,7 @@ if (! function_exists('guzHttpRequest')) {
             $respBody = $response->getBody()->getContents();
 
             // 记录响应报文（正常）
-            \Log::channel('api_request')->info('resp:' . $requestSn, [
+            \Log::channel('api_request')->info('resp:' . $reqNo, [
                 'resp_status' => $respCode,
                 'resp_body'   => $respBody,
                 'elapsed'     => round(microtime(true) - $nowMs, 6),
@@ -494,7 +494,7 @@ if (! function_exists('guzHttpRequest')) {
         catch (\Throwable $e) {
 
             // 记录响应报文（异常）
-            \Log::channel('api_request')->info('resp_err:' . $requestSn, [
+            \Log::channel('api_request')->info('resp_err:' . $reqNo, [
                 'exception' => getFullException($e),
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
@@ -524,10 +524,10 @@ if (! function_exists('loggingInOut')) {
         $nowMs = microtime(true);
 
         // 请求流水号
-        $requestSn = \Str::orderedUuid();
+        $reqNo = \Str::orderedUuid();
 
         // 记录请求报文
-        \Log::channel($channel)->info('req:' . $requestSn, [
+        \Log::channel($channel)->info('req:' . $reqNo, [
             'req_args' => $args,
         ]);
 
@@ -536,7 +536,7 @@ if (! function_exists('loggingInOut')) {
             $response = call_user_func_array($callback, $args);
 
             // 记录响应报文（正常）
-            \Log::channel($channel)->info('resp:' . $requestSn, [
+            \Log::channel($channel)->info('resp:' . $reqNo, [
                 'resp_body' => $response,
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
@@ -544,7 +544,7 @@ if (! function_exists('loggingInOut')) {
 
         catch (\Throwable $e) {
 
-            \Log::channel($channel)->info('resp_err:' . $requestSn, [
+            \Log::channel($channel)->info('resp_err:' . $reqNo, [
                 'exception' => getFullException($e),
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);

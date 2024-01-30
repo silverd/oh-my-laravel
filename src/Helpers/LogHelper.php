@@ -49,7 +49,7 @@ class LogHelper
         return $return;
     }
 
-    public static function makeDailyFileChannels(array $channels, int $days = 120)
+    public static function makeDailyFileChannels(array $channels, string $prefix = 'laravel', int $days = 120)
     {
         $return = [];
 
@@ -57,7 +57,7 @@ class LogHelper
             $return[$channel] = [
                 'driver'     => 'daily',
                 'level'      => 'debug',
-                'path'       => storage_path('logs/laravel_' . php_sapi_name() . '_' . $channel . '.log'),
+                'path'       => storage_path('logs/' . $prefix . '_' . php_sapi_name() . '_' . $channel . '.log'),
                 'days'       => $days,
                 'permission' => 0666,
                 'formatter'  => JsonFormatter::class,
