@@ -48,7 +48,25 @@ class LogHelper
         return $return;
     }
 
-    public static function makeMongoDbChannels(array $channels)
+    public static function makeDailyFileChannels(array $channels, int $days = 120)
+    {
+        $return = [];
+
+        foreach ($channels as $channel) {
+            $return[$channel] = [
+                'driver'     => 'daily',
+                'path'       => storage_path('logs/laravel_' . php_sapi_name() . '_' . $channel . '.log'),
+                'level'      => Logger::DEBUG,
+                'days'       => $days,
+                'permission' => 0666,
+                'formatter'  => Monolog\Formatter\JsonFormatter::class,
+            ];
+        }
+
+        return $return;
+    }
+
+    public static function makeMongoDbChannels(array $channels, int $maxNestingLevel = 10)
     {
         $return = [];
 
@@ -64,7 +82,7 @@ class LogHelper
                     'connection' => 'mongodb_log',
                 ],
                 'formatter_with' => [
-                    'maxNestingLevel' => 10,
+                    'maxNestingLevel' => $maxNestingLevel,
                 ],
             ];
         }
