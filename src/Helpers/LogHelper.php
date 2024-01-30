@@ -20,6 +20,25 @@ class LogHelper
                 'with'    => [
                     'level'      => Logger::DEBUG,
                     'table'      => 'log_' . $channel,
+                    'connection' => 'mysql_log',
+                ],
+            ];
+        }
+
+        return $return;
+    }
+
+    public static function makeDailyMySQLDbChannels(array $channels)
+    {
+        $return = [];
+
+        foreach ($channels as $channel) {
+            $return[$channel] = [
+                'driver'  => 'monolog',
+                'handler' => DatabaseHandler::class,
+                'with'    => [
+                    'level'      => Logger::DEBUG,
+                    'table'      => 'log_' . $channel,
                     'rotate'     => 'ymd',
                     'connection' => 'mysql_log',
                 ],
