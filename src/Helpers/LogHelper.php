@@ -9,7 +9,7 @@ use Silverd\OhMyLaravel\Extensions\Logger\Handler\DatabaseHandler;
 
 class LogHelper
 {
-    public static function makeMySQLDbChannel(array $channels)
+    public static function makeMySQLDbChannels(array $channels)
     {
         $return = [];
 
@@ -29,7 +29,7 @@ class LogHelper
         return $return;
     }
 
-    public static function makeMongoDbChannel(array $channels)
+    public static function makeMongoDbChannels(array $channels)
     {
         $return = [];
 
