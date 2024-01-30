@@ -49,7 +49,7 @@ class LogHelper
         return $return;
     }
 
-    public static function makeDailyFileChannels(array $channels, string $prefix = 'laravel', int $days = 120)
+    public static function makeDailyFileChannels(array $channels, string $prefix = 'cls', int $days = 120)
     {
         $return = [];
 
