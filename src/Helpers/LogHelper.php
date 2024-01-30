@@ -5,6 +5,7 @@ namespace Silverd\OhMyLaravel\Helpers;
 use Monolog\Logger;
 use Monolog\Handler\MongoDBHandler;
 use Monolog\Formatter\MongoDBFormatter;
+use Monolog\Formatter\JsonFormatter;
 use Silverd\OhMyLaravel\Extensions\Logger\Handler\DatabaseHandler;
 
 class LogHelper
@@ -59,7 +60,7 @@ class LogHelper
                 'path'       => storage_path('logs/laravel_' . php_sapi_name() . '_' . $channel . '.log'),
                 'days'       => $days,
                 'permission' => 0666,
-                'formatter'  => Monolog\Formatter\JsonFormatter::class,
+                'formatter'  => JsonFormatter::class,
             ];
         }
 
