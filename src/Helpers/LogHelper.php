@@ -55,8 +55,8 @@ class LogHelper
         foreach ($channels as $channel) {
             $return[$channel] = [
                 'driver'     => 'daily',
+                'level'      => 'debug',
                 'path'       => storage_path('logs/laravel_' . php_sapi_name() . '_' . $channel . '.log'),
-                'level'      => Logger::DEBUG,
                 'days'       => $days,
                 'permission' => 0666,
                 'formatter'  => Monolog\Formatter\JsonFormatter::class,
