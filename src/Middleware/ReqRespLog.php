@@ -17,7 +17,8 @@ class ReqRespLog
 
     public function terminate($request, $response)
     {
-        $data = [
+        $context = [
+            'req_sn'    => $GLOBALS['_REQUEST_SN'],
             'req_args'  => [
                 'path'    => $request->fullUrl(),
                 'method'  => $request->method(),
@@ -28,6 +29,6 @@ class ReqRespLog
             'elapsed'   => round(microtime(true) - LARAVEL_START, 6),
         ];
 
-        \Log::channel('req_resp')->info($GLOBALS['_REQUEST_SN'], $data);
+        \Log::channel('req_resp')->info('API 请求响应', $context);
     }
 }

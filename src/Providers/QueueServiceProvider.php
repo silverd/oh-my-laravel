@@ -39,9 +39,10 @@ class QueueServiceProvider extends ServiceProvider
             $payload = $event->job->payload();
             $jobClass = $payload['data']['commandName'];
             if (in_array($jobClass, config('oh-my-laravel.log_succeed_jobs', []))) {
-                \Log::channel('queue_succeed')->info($payload['displayName'], [
-                    'connection'  => $event->connectionName,
+                \Log::channel('queue_succeed')->info('队列任务成功', [
+                    'job_name'    => $payload['displayName'],
                     'job_payload' => $payload,
+                    'connection'  => $event->connectionName,
                 ]);
             }
         });
@@ -49,9 +50,10 @@ class QueueServiceProvider extends ServiceProvider
         // 每个任务执行失败后
         QueueManager::failing(function (JobFailed $event) {
             $payload = $event->job->payload();
-            \Log::channel('queue_failed')->error($payload['displayName'], [
-                'connection'  => $event->connectionName,
+            \Log::channel('queue_failed')->error('队列任务失败', [
+                'job_name'    => $payload['displayName'],
                 'job_payload' => $payload,
+                'connection'  => $event->connectionName,
                 'exception'   => getFullException($event->exception),
             ]);
         });

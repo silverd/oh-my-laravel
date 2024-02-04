@@ -471,7 +471,8 @@ if (! function_exists('guzHttpRequest')) {
         $reqNo = \Str::orderedUuid();
 
         // 记录请求报文
-        \Log::channel('api_request')->info('req:' . $reqNo, [
+        \Log::channel('api_request')->info('HTTP 请求', [
+            'req_no'   => $reqNo,
             'req_url'  => $url,
             'req_body' => $data,
         ]);
@@ -484,7 +485,8 @@ if (! function_exists('guzHttpRequest')) {
             $respBody = $response->getBody()->getContents();
 
             // 记录响应报文（正常）
-            \Log::channel('api_request')->info('resp:' . $reqNo, [
+            \Log::channel('api_request')->info('HTTP 响应', [
+                'req_no'      => $reqNo,
                 'resp_status' => $respCode,
                 'resp_body'   => $respBody,
                 'elapsed'     => round(microtime(true) - $nowMs, 6),
@@ -494,7 +496,8 @@ if (! function_exists('guzHttpRequest')) {
         catch (\Throwable $e) {
 
             // 记录响应报文（异常）
-            \Log::channel('api_request')->info('resp_err:' . $reqNo, [
+            \Log::channel('api_request')->error('HTTP 响应', [
+                'req_no'    => $reqNo,
                 'exception' => getFullException($e),
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
@@ -527,7 +530,8 @@ if (! function_exists('loggingInOut')) {
         $reqNo = \Str::orderedUuid();
 
         // 记录请求报文
-        \Log::channel($channel)->info('req:' . $reqNo, [
+        \Log::channel($channel)->info('HTTP 请求', [
+            'req_no'   => $reqNo,
             'req_args' => $args,
         ]);
 
@@ -536,7 +540,7 @@ if (! function_exists('loggingInOut')) {
             $response = call_user_func_array($callback, $args);
 
             // 记录响应报文（正常）
-            \Log::channel($channel)->info('resp:' . $reqNo, [
+            \Log::channel($channel)->info('HTTP 响应', [
                 'resp_body' => $response,
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
@@ -544,7 +548,7 @@ if (! function_exists('loggingInOut')) {
 
         catch (\Throwable $e) {
 
-            \Log::channel($channel)->info('resp_err:' . $reqNo, [
+            \Log::channel($channel)->error('HTTP 响应', [
                 'exception' => getFullException($e),
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
