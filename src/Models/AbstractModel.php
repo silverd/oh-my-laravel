@@ -37,13 +37,17 @@ abstract class AbstractModel extends Model
         return static::STATUS_TEXTS[$this->status] ?? '-';
     }
 
+    public function getNameCn()
+    {
+        return $this->modelName ?: (' ' . class_basename($this) . ' ');
+    }
+
     public function checkStatus($status, string $message = '')
     {
         $statuses = (array) $status;
 
         if (! in_array($this->status, $statuses)) {
-            $name = $this->modelName ?: class_basename(get_called_class());
-            throws($message ?: $name . ' 状态必须为' . implode('/', \Arr::only(static::STATUS_TEXTS, $statuses)));
+            throws($message ?: $this->getNameCn() . '状态必须为' . implode('/', \Arr::only(static::STATUS_TEXTS, $statuses)));
         }
 
         return $this;
