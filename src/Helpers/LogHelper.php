@@ -5,7 +5,7 @@ namespace Silverd\OhMyLaravel\Helpers;
 use Monolog\Logger;
 use Monolog\Handler\MongoDBHandler;
 use Monolog\Formatter\MongoDBFormatter;
-use Monolog\Formatter\JsonFormatter;
+use Silverd\OhMyLaravel\Extensions\Logger\Formatter\JsonFormatter;
 use Silverd\OhMyLaravel\Extensions\Logger\Handler\DatabaseHandler;
 
 class LogHelper
