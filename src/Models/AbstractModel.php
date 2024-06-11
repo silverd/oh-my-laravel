@@ -42,12 +42,12 @@ abstract class AbstractModel extends Model
         return $this->modelName ?: (' ' . class_basename($this) . ' ');
     }
 
-    public function checkStatus($status, string $message = '')
+    public function checkStatus($status, string $message = '', int $code = -1)
     {
         $statuses = (array) $status;
 
         if (! in_array($this->status, $statuses)) {
-            throws($message ?: $this->getNameCn() . '状态必须为' . implode('/', \Arr::only(static::STATUS_TEXTS, $statuses)));
+            throws($message ?: $this->getNameCn() . '状态必须为' . implode('/', \Arr::only(static::STATUS_TEXTS, $statuses)), $code);
         }
 
         return $this;
