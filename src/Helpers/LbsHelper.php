@@ -8,19 +8,19 @@ class LbsHelper
      * 计算两个坐标之间的距离（米）
      *
      * @param array $fromPoint 起点 [经度, 纬度]
-     * @param array $destPoint 终点 [经度, 纬度]
+     * @param array $toPoint 终点 [经度, 纬度]
      * @return int 距离（米）
      */
-    public static function calcDistance(array $fromPoint, array $destPoint)
+    public static function calcDistance(array $fromPoint, array $toPoint)
     {
         // 地球半径
         $fEARTH_RADIUS = 6378137;
 
         // 角度换算成弧度
-        $fRadLng1 = deg2rad($fromPoint[0]);
-        $fRadLng2 = deg2rad($destPoint[0]);
-        $fRadLat1 = deg2rad($fromPoint[1]);
-        $fRadLat2 = deg2rad($destPoint[1]);
+        $fRadLng1 = deg2rad($fromPoint['longitude']);
+        $fRadLng2 = deg2rad($toPoint['longitude']);
+        $fRadLat1 = deg2rad($fromPoint['latitude']);
+        $fRadLat2 = deg2rad($toPoint['latitude']);
 
         // 计算经纬度的差值
         $fD1 = abs($fRadLat1 - $fRadLat2);
@@ -32,12 +32,9 @@ class LbsHelper
         return intval($fEARTH_RADIUS * 2 * asin(sqrt($fP)) + 0.5);
     }
 
-    public static function calcDistanceKm($from, $to, int $precision = 1)
+    public static function calcDistanceKm(array $fromPoint, array $toPoint, int $precision = 1)
     {
-        $distanceMi = self::calcDistance(
-            [$from['longitude'], $from['latitude']],
-            [$to['longitude'], $to['latitude']]
-        );
+        $distanceMi = self::calcDistance($fromPoint, $toPoint);
 
         return round($distanceMi / 1000, $precision);
     }
