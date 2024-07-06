@@ -502,7 +502,13 @@ if (! function_exists('guzHttpRequest')) {
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
             ]);
 
-            throw $e;
+            if ($e instanceof \GuzzleHttp\Exception\BadResponseException) {
+                $respCode = $e->getResponse()->getStatusCode();
+                $respBody = $e->getResponse()->getBody()->getContents();
+            }
+            else {
+                throw $e;
+            }
         }
 
         $result = null;
@@ -799,48 +805,5 @@ if (! function_exists('isShouldRunButNot')) {
             $lastRunAt >= $dueRunAt,
             $dueRunAt,
         ];
-    }
-}
-
-if (! function_exists('getDistance')) {
-    function getDistance(array $fromPos, array $toPos)
-    {
-        return \Silverd\OhMyLaravel\Helpers\LbsHelper::calcDistance($fromPos, $toPos);
-    }
-}
-
-if (! function_exists('mergeListByKey')) {
-    function mergeListByKey(string $key, array $items)
-    {
-        $allKeys = [];
-
-        foreach ($items as &$item) {
-            $item = \Silverd\OhMyLaravel\Helpers\ArrayHelper::indexField($item, $key);
-            $allKeys = array_merge($allKeys, array_keys($item));
-        }
-
-        $merged = [];
-
-        foreach (array_unique($allKeys) as $_key) {
-            foreach ($items as $_item) {
-                $merged[$_key] = array_merge($merged[$_key] ?? [], $_item[$_key] ?? []);
-            }
-        }
-
-        return $merged;
-    }
-}
-
-if (! function_exists('msTimeToDate')) {
-    function msTimeToDate(string $msDateTime)
-    {
-        return date('Y-m-d', $msDateTime / 1000);
-    }
-}
-
-if (! function_exists('msTimeToDateTime')) {
-    function msTimeToDateTime(string $msDateTime)
-    {
-        return date('Y-m-d H:i:s', $msDateTime / 1000);
     }
 }
