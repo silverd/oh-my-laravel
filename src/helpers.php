@@ -568,9 +568,9 @@ if (! function_exists('loggingInOut')) {
 
 if (! function_exists('cacheRemember')) {
     // 缓存结果集
-    function cacheRemember(array $params, callable $callback, string $store = 'database')
+    function cacheRemember(string $prefix, array $params, callable $callback, string $store = 'database')
     {
-        $cacheKey = md5(serialize($params));
+        $cacheKey = $prefix . '|' . md5(serialize($params));
 
         $result = \Cache::store($store)->rememberForever($cacheKey, function () use ($callback, $params) {
             return call_user_func($callback, $params);
