@@ -38,7 +38,6 @@ class DatabaseHandler extends AbstractProcessingHandler
 
     protected function write(LogRecord $record): void
     {
-
         $table = $this->table . ($this->rotate ? '_' . date($this->rotate) : '');
 
         try {
@@ -66,20 +65,25 @@ class DatabaseHandler extends AbstractProcessingHandler
 
     protected function createTable(string $table)
     {
-        // 创建日志表
-        if (! \Schema::connection($this->connection)->hasTable($table)) {
-            \Schema::connection($this->connection)->create($table, function (Blueprint $tbl) {
-                $tbl->increments('id')->unsigned();
-                $tbl->integer('level')->unsigned();
-                $tbl->string('level_name');
-                $tbl->string('channel');
-                $tbl->longText('message');
-                $tbl->longText('context');
-                $tbl->longText('extra');
-                $tbl->timestamp('created_at')->nullable();
-                $tbl->charset = 'utf8mb4';
-                $tbl->collation = 'utf8mb4_unicode_ci';
-            });
+        try {
+            // 创建日志表
+            if (! \Schema::connection($this->connection)->hasTable($table)) {
+                \Schema::connection($this->connection)->create($table, function (Blueprint $tbl) {
+                    $tbl->increments('id')->unsigned();
+                    $tbl->integer('level')->unsigned();
+                    $tbl->string('level_name');
+                    $tbl->string('channel');
+                    $tbl->longText('message');
+                    $tbl->longText('context');
+                    $tbl->longText('extra');
+                    $tbl->timestamp('created_at')->nullable();
+                    $tbl->charset = 'utf8mb4';
+                    $tbl->collation = 'utf8mb4_unicode_ci';
+                });
+            }
+        }
+        catch (\Throwable $e) {
+
         }
 
         return $this;
