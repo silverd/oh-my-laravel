@@ -475,6 +475,8 @@ if (! function_exists('guzHttpRequest')) {
             'req_no'   => $reqNo,
             'req_url'  => $url,
             'req_body' => $data,
+            'method'   => $method,
+            'headers'  => $headers,
         ]);
 
         try {
