@@ -13,12 +13,14 @@ class BizConfig extends AbstractModel
     const
         VALUE_TYPE_INPUT    = 1,
         VALUE_TYPE_TEXTAREA = 2,
-        VALUE_TYPE_EDITOR   = 3;
+        VALUE_TYPE_EDITOR   = 3,
+        VALUE_TYPE_PASSWORD = 4;
 
     const VALUE_TYPES = [
         self::VALUE_TYPE_INPUT    => '输入框',
         self::VALUE_TYPE_TEXTAREA => '文本域',
         self::VALUE_TYPE_EDITOR   => '富文本',
+        self::VALUE_TYPE_EDITOR   => '密码框',
     ];
 
     protected static function booted()
