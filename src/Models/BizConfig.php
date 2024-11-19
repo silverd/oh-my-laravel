@@ -64,7 +64,7 @@ class BizConfig extends AbstractModel
         };
 
         // 无需缓存
-        if ($on == 2) {
+        if ($on === 2) {
             return $getter();
         }
 
