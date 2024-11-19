@@ -3,7 +3,8 @@
 return [
 
     // 业务参数配置表
-    'biz_config' => true,
+    // 0: 不需要 1:需要+缓存 2:需要+不缓存
+    'biz_config' => 1,
 
     // 需要记录「任务执行成功日志」的队列类名
     'log_succeed_jobs' => [

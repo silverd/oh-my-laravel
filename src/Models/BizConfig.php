@@ -2,6 +2,9 @@
 
 namespace Silverd\OhMyLaravel\Models;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class BizConfig extends AbstractModel
 {
     protected $table = 'config_biz';
@@ -34,19 +37,38 @@ class BizConfig extends AbstractModel
         static::deleted($callback);
     }
 
-    private static function fetchAll()
+    protected function value(): Attribute
+    {
+        return new Attribute(
+            get: function ($value) {
+                return $this->value_type == self::VALUE_TYPE_PASSWORD ? Crypt::decrypt($value) : $value;
+            },
+            set: function ($value) {
+                return $this->value_type == self::VALUE_TYPE_PASSWORD ? Crypt::encrypt($value) : $value;
+            }
+        );
+    }
+
+    public static function fetchAll()
     {
         $config = config('oh-my-laravel');
 
-        $on = $config['biz_config'] ?? true;
+        $on = $config['biz_config'] ?? 1;
 
         if (! $on) {
             return [];
         }
 
-        return \Cache::rememberForever('bizConfig', function () {
-            return self::pluck('value', 'key')->toArray();
-        });
+        $getter = function () {
+            return static::get()->pluck('value', 'key')->toArray();
+        };
+
+        // 无需缓存
+        if ($on == 2) {
+            return $getter();
+        }
+
+        return \Cache::rememberForever('bizConfig', $getter);
     }
 
     private static function clearCache()
