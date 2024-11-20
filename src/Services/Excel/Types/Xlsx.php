@@ -10,10 +10,10 @@ class Xlsx
 
     public function __construct(string $filePath, int $sheet = 1)
     {
-        $explodeFilePath = explode('/', $filePath);
+        $_filePath = explode('/', $filePath);
 
-        $fileName = end($explodeFilePath);
-        $fileDir = str_replace($fileName, '', $filePath);
+        $fileName = end($_filePath);
+        $fileDir = rtrim(str_replace($fileName, '', $filePath), '/');
 
         $this->excel = (new Excel(['path' => $fileDir]))->openFile($fileName);
 
@@ -31,10 +31,15 @@ class Xlsx
         }
 
         if (! $sheetName) {
-            throws('文件「' . $fileName .'」指定工作表不存在');
+            throws('文件「' . $fileName . '」指定工作表不存在');
         }
 
         $this->excel->openSheet($sheetName);
+    }
+
+    public function sheetList()
+    {
+        return $this->excel->sheetList();
     }
 
     public function nextRow()

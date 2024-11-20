@@ -12,43 +12,50 @@ class Reader
     public $fileName;
 
     const SUPPORT_TYPES = [
-        'Xlsx',
-        'Csv',
+        'xlsx',
+        'csv',
     ];
 
-    public function __construct(string $fileUrl, int $sheet = 1, string $type = '')
+    public function __construct(string $fileUrl, int $sheet = 1, string $extension = '')
     {
-        if (! $type) {
-            $explodeFileUrl = explode('.', $fileUrl);
-            $type = end($explodeFileUrl);
+        // 文件扩展名
+        if (! $extension) {
+            $_fileUrl = explode('.', $fileUrl);
+            $extension = end($_fileUrl);
         }
 
-        if (! in_array($type = Str::title($type), self::SUPPORT_TYPES)) {
+        if (! in_array($extension, self::SUPPORT_TYPES)) {
             throws('不支持该文件类型');
         }
 
-        // 文件转存本地
-        $this->fileName = Str::random(32) . '.' . $type;
+        // 远程地址转为本地文件
+        if (filter_var($fileUrl, FILTER_VALIDATE_URL)) {
 
-        Storage::disk('local')->put($this->fileName, fetchImg($fileUrl));
+            // 文件转存本地
+            $disk = Storage::disk('local');
 
-        // 文件本地路径
-        $fileDir = storage_path('app/' . $this->fileName);
+            $this->fileName = Str::random(32) . '.' . $extension;
 
-        $className = 'Silverd\OhMyLaravel\Services\Excel\Types\\' . $type;
+            $disk->put($this->fileName, fetchImg($fileUrl));
 
-        $this->excel = new $className($fileDir, $sheet);
-    }
+            $fileUrl = storage_path('app/' . $this->fileName);
+        }
 
-    // 获取下一行数据
-    public function nextRow()
-    {
-        return $this->excel->nextRow();
+        $className = 'Silverd\OhMyLaravel\Services\Excel\Types\\' . ucfirst($extension);
+
+        $this->excel = new $className($fileUrl, $sheet);
     }
 
     public function __destruct()
     {
         // 删除本地临时文件
-        Storage::disk('local')->delete($this->fileName);
+        if ($this->fileName) {
+            Storage::disk('local')->delete($this->fileName);
+        }
+    }
+
+    public function __call(string $name, array $args)
+    {
+        return $this->excel->{$name}(...$args);
     }
 }
