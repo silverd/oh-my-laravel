@@ -439,7 +439,7 @@ if (! function_exists('humanExceptionText')) {
 if (! function_exists('guzHttpRequest')) {
     function guzHttpRequest(
         string $url,
-        $params,
+        string | array $params,
         string $method = 'POST',
         string $format = null,
         array $headers = [],
