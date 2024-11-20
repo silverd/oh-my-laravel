@@ -3,11 +3,8 @@
 // Excel 读取工具
 namespace Silverd\OhMyLaravel\Services\Excel;
 
-use Str;
-use Storage;
-use Vtiful\Kernel\Excel;
-use App\Services\Excel\Types\Csv;
-use App\Services\Excel\Types\Xlsx;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Reader
 {
@@ -31,14 +28,14 @@ class Reader
         }
 
         // 文件转存本地
-        $this->fileName = \Str::random(32) . '.' . $type;
+        $this->fileName = Str::random(32) . '.' . $type;
 
         Storage::disk('local')->put($this->fileName, fetchImg($fileUrl));
 
         // 文件本地路径
         $fileDir = storage_path('app/' . $this->fileName);
 
-        $className = 'App\Services\Excel\Types\\' . $type;
+        $className = 'Silverd\OhMyLaravel\Services\Excel\Types\\' . $type;
 
         $this->excel = new $className($fileDir, $sheet);
     }

@@ -4,6 +4,9 @@
 namespace Silverd\OhMyLaravel\Services\Excel;
 
 use Illuminate\Http\File;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Vtiful\Kernel\Excel;
 
 class Writer
 {
@@ -18,9 +21,13 @@ class Writer
             'path' => storage_path('app/'),
         ];
 
-        $this->excel = new \Vtiful\Kernel\Excel($config);
+        if (!class_exists('Vtiful\Kernel\Excel')) {
+            throw new \Exception('The Excel class is not defined. Please ensure the Vtiful\Kernel\Excel package is installed.');
+        }
 
-        $uniqName = \Str::random(32) . '.xlsx';
+        $this->excel = new Excel($config);
+
+        $uniqName = Str::random(32) . '.xlsx';
 
         // 固定内存模式
         // @see https://xlswriter-docs.viest.me/zh-cn/nei-cun/gu-ding-nei-cun-mo-shi
@@ -42,7 +49,7 @@ class Writer
     {
         $filePath = $this->excel->output();
 
-        $disk = \Storage::disk($disk);
+        $disk = Storage::disk($disk);
 
         $fileKey = $disk->putFileAs('excel', new File($filePath), $this->fileName);
 
@@ -64,7 +71,7 @@ class Writer
     public function __destruct()
     {
         // 删除本地临时文件
-        \Storage::disk('local')->delete($this->fileName);
+        Storage::disk('local')->delete($this->fileName);
     }
 
     public function insertTexts(array $list, int $startRowNo = 0, $gridStyle = null, callable $callback = null)
@@ -84,8 +91,7 @@ class Writer
                 // 注意：行列的起始下标都为0
                 if ($gridStyle) {
                     $this->excel->insertText($rowNo, $colNo++, $value, '', $gridStyle);
-                }
-                else {
+                } else {
                     $this->excel->insertText($rowNo, $colNo++, $value);
                 }
             }
