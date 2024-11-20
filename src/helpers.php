@@ -444,7 +444,8 @@ if (! function_exists('guzHttpRequest')) {
         string $format = null,
         array $headers = [],
         string $respType = 'JSON',
-        array $guzConfig = []
+        array $guzConfig = [],
+        string $logChannel = 'api_request',
     ) {
         $headers['x-request-sn'] = $GLOBALS['_REQUEST_SN'];
 
@@ -471,7 +472,7 @@ if (! function_exists('guzHttpRequest')) {
         $reqNo = \Str::orderedUuid();
 
         // 记录请求报文
-        \Log::channel('api_request')->info('HTTP 请求', [
+        \Log::channel($logChannel)->info('HTTP 请求', [
             'req_no'   => $reqNo,
             'req_url'  => $url,
             'req_body' => $data,
@@ -487,7 +488,7 @@ if (! function_exists('guzHttpRequest')) {
             $respBody = $response->getBody()->getContents();
 
             // 记录响应报文（正常）
-            \Log::channel('api_request')->info('HTTP 响应', [
+            \Log::channel($logChannel)->info('HTTP 响应', [
                 'req_no'      => $reqNo,
                 'resp_status' => $respCode,
                 'resp_body'   => $respBody,
@@ -498,7 +499,7 @@ if (! function_exists('guzHttpRequest')) {
         catch (\Throwable $e) {
 
             // 记录响应报文（异常）
-            \Log::channel('api_request')->error('HTTP 响应', [
+            \Log::channel($logChannel)->error('HTTP 响应', [
                 'req_no'    => $reqNo,
                 'exception' => getFullException($e),
                 'elapsed'   => round(microtime(true) - $nowMs, 6),
