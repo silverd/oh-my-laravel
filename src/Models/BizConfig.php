@@ -41,10 +41,20 @@ class BizConfig extends AbstractModel
     {
         return new Attribute(
             get: function ($value) {
-                return $this->value_type == self::VALUE_TYPE_PASSWORD ? Crypt::decrypt($value) : $value;
+                try {
+                    return $this->value_type == self::VALUE_TYPE_PASSWORD ? Crypt::decrypt($value) : $value;
+                }
+                catch (\Throwable $e) {
+                    return $value;
+                }
             },
             set: function ($value) {
-                return $this->value_type == self::VALUE_TYPE_PASSWORD ? Crypt::encrypt($value) : $value;
+                try {
+                    return $this->value_type == self::VALUE_TYPE_PASSWORD ? Crypt::encrypt($value) : $value;
+                }
+                catch (\Throwable $e) {
+                    return $value;
+                }
             }
         );
     }
