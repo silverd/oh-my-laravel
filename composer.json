@@ -2,7 +2,6 @@
     "name": "silverd/oh-my-laravel",
     "type": "library",
     "require": {
-        "beyondcode/laravel-dump-server": "^1.9",
         "guzzlehttp/guzzle": "^7.8",
         "predis/predis": "^2.2",
         "laravel/horizon": "^5.0",
