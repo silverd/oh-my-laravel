@@ -32,7 +32,7 @@ class FlushDbLogs extends Command
 
             try {
                 // 七天内日志保留
-                if (now()->diffInDays($date) <= $maxDays) {
+                if (now()->diffInDays($date, true) <= $maxDays) {
                     continue;
                 }
             }
