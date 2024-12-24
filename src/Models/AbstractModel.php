@@ -4,7 +4,8 @@ namespace Silverd\OhMyLaravel\Models;
 
 use App\Jobs\StorageByUrlJob;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\FacadesDB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use DateTimeInterface;
 
 abstract class AbstractModel extends Model
@@ -104,7 +105,7 @@ abstract class AbstractModel extends Model
             return false;
         }
 
-        $remoteHost = \Storage::url('/');
+        $remoteHost = Storage::url('/');
 
         // 如果该 URL 本来就是 COS 上的资源，所以无需转存
         if (\Str::startsWith($this->$field, $remoteHost)) {
