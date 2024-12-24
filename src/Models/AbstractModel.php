@@ -4,6 +4,7 @@ namespace Silverd\OhMyLaravel\Models;
 
 use App\Jobs\StorageByUrlJob;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\FacadesDB;
 use DateTimeInterface;
 
 abstract class AbstractModel extends Model
@@ -60,7 +61,7 @@ abstract class AbstractModel extends Model
 
         foreach ($attributes as $column => $amount) {
             $originals[$column] = $this->{$column};
-            $updated[$column] = \DB::raw("`{$column}` + {$amount}");
+            $updated[$column] = DB::raw("`{$column}` + {$amount}");
         }
 
         if (! $this->fill($updated)->save()) {
@@ -74,6 +75,15 @@ abstract class AbstractModel extends Model
         }
 
         return true;
+    }
+
+    public static function increase(array $pk, string $field, int $addValue = 1)
+    {
+        return self::upsert(
+            $pk + [$field => $addValue],
+            array_keys($pk),
+            [$field => DB::raw('1 + ' . $field)]
+        );
     }
 
     /**
