@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Silverd\OhMyLaravel\Models\BizConfig;
 use Silverd\OhMyLaravel\Helpers\IDCardHelper;
+use Illuminate\Database\Eloquent\Casts\Json;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,11 @@ class AppServiceProvider extends ServiceProvider
 
         // 集合的一些扩展方法
         $this->initCollectionMarco();
+
+        // 对中文支持更友好的序列化
+        Json::encodeUsing(function (mixed $value) {
+            return jsonEncode($value);
+        });
     }
 
     protected function getRequestSn()
