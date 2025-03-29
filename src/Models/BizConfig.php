@@ -70,7 +70,7 @@ class BizConfig extends AbstractModel
         }
 
         $getter = function () {
-            return static::get()->pluck('value', 'key')->toArray();
+            return static::get()->toArray();
         };
 
         // 无需缓存
@@ -88,8 +88,17 @@ class BizConfig extends AbstractModel
 
     public static function initConfig()
     {
-        foreach (static::fetchAll() as $key => $value) {
-            config(['biz.' . $key => $value]);
+        $config = config('oh-my-laravel');
+
+        $on = $config['biz_config'] ?? 1;
+
+        if (! $on) {
+            return null;
+        }
+
+        foreach (static::fetchAll() as $one) {
+            $key = isset($one['site_id']) ? ($one['site_id'] . '.' . $one['key']) : $one['key'];
+            config(['biz.' . $key => $one['value']]);
         }
     }
 
