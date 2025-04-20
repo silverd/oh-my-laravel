@@ -8,7 +8,7 @@
         "mnabialek/laravel-sql-logger": "^2.2",
         "monolog/monolog": "^3.0",
         "symfony/mailer": "^6.2 || ^7.0",
-        "laravel/framework": "^10.0 || ^11.0",
+        "laravel/framework": "^10.0 || ^11.0 || ^12.0",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-curl": "*"
