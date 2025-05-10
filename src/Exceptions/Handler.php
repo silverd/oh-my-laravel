@@ -89,14 +89,16 @@ class Handler extends ExceptionHandler
         if ($exception instanceof ModelNotFoundException) {
             return [
                 'code'    => $code,
-                'message' => '找不到指定 ' . class_basename($exception->getModel()) . ' 记录',
+                'message' => __(':Record No data record found', [
+                    'record' => class_basename($exception->getModel()),
+                ]),
             ];
         }
 
         if ($exception instanceof AuthenticationException) {
             return [
                 'code'    => -1000,
-                'message' => '登录状态已过期，请重新登录',
+                'message' => __('Authentication token has expired'),
             ];
         }
 
