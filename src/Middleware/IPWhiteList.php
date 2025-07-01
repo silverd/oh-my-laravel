@@ -21,7 +21,7 @@ class IPWhiteList
         $ip = $request->getClientIp();
 
         if (! IpUtils::checkIp($ip, $serverIps)) {
-            throws('来源 ' . $ip . ' 为非法访问');
+            throws(__('Invalid source ip (:ip)', [$ip => $ip]));
         }
 
         return $next($request);

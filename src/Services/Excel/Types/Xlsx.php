@@ -20,7 +20,7 @@ class Xlsx
         $sheetName = '';
 
         if (! $this->excel->sheetList()) {
-            throws('文件「' . $fileName . '」读取工作表列表失败');
+            throws(__('File :file failed to read worksheet list', ['file' => $fileName]));
         }
 
         foreach ($this->excel->sheetList() as $id => $name) {
@@ -31,7 +31,7 @@ class Xlsx
         }
 
         if (! $sheetName) {
-            throws('文件「' . $fileName . '」指定工作表不存在');
+            throws(__('File :file specified worksheet does not exist', ['file' => $fileName]));
         }
 
         $this->excel->openSheet($sheetName);

@@ -9,7 +9,6 @@ class OpenSignService
         return buildSignature($params, $secretKey);
     }
 
-    // 验证签名
     public static function verifySign(array $params, string $secretKey, string $signField = 'sign')
     {
         \Validator::make($params, [
@@ -27,7 +26,7 @@ class OpenSignService
         $signed = self::buildSign($params, $secretKey);
 
         if (urlencode($signature) != $signed && $signature != $signed) {
-            throws('对称签名验证失败 =_=');
+            throws(__('Signature verification failed'));
         }
     }
 }

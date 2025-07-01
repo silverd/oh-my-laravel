@@ -25,7 +25,7 @@ class Reader
         }
 
         if (! in_array($extension, self::SUPPORT_TYPES)) {
-            throws('不支持该文件类型');
+            throws(__('Unsupported file type'));
         }
 
         // 远程地址转为本地文件

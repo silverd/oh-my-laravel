@@ -2,21 +2,19 @@
 
 namespace Silverd\OhMyLaravel\Middleware;
 
-use Auth;
-use Cache;
 use Closure;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use RuntimeException;
 
 class ReqInterval
 {
-    public function handle(Request $request, Closure $next, int $seconds = 1, string $namespace = null)
+    public function handle(Request $request, Closure $next, int $seconds = 1, ?string $namespace = null)
     {
         $cacheKey = self::getUniqueKey($request, $namespace);
 
         if ($diffSecs = self::calcNextReqDiffSecs($cacheKey, $seconds)) {
-            throws('操作频繁，请' . $diffSecs . '秒后重试', -2);
+            throws(__('Too frequent operation, please try again in :secs seconds', ['secs' => $diffSecs]), -2);
         }
 
         return $next($request);
@@ -42,7 +40,7 @@ class ReqInterval
     }
 
     // 构造请求标识
-    private static function getUniqueKey(Request $request, string $namespace = null)
+    private static function getUniqueKey(Request $request, ?string $namespace = null)
     {
         if ($user = $request->user()) {
             $uniqueKey = sha1($user->getAuthIdentifier());

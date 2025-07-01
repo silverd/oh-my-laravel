@@ -6,6 +6,7 @@ use App\Jobs\StorageByUrlJob;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 use DateTimeInterface;
 
 abstract class AbstractModel extends Model
@@ -49,7 +50,10 @@ abstract class AbstractModel extends Model
         $statuses = (array) $status;
 
         if (! in_array($this->status, $statuses)) {
-            throws($message ?: $this->getNameCn() . '状态必须为' . implode('/', \Arr::only(static::STATUS_TEXTS, $statuses)), $code);
+            throws($message ?: __('The :model status must be :status', [
+                'model'  => $this->getNameCn(),
+                'status' => implode('/', Arr::only(static::STATUS_TEXTS, $statuses))
+            ]), $code);
         }
 
         return $this;
