@@ -37,7 +37,8 @@ class ServiceProvider extends BaseServiceProvider
         // 必须注册全局中间件，因为路由中间件当控制器遇到 ParseError 时不会执行
         $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(Middleware\ReqRespLog::class);
 
-        // IP 白名单中间件
+        // 路由中间件
         app('router')->aliasMiddleware('ip-whitelist', Middleware\IPWhiteList::class);
+        app('router')->aliasMiddleware('req.interval', Middleware\ReqInterval::class);
     }
 }
