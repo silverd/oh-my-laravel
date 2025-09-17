@@ -17,12 +17,12 @@ abstract class AbstractModel extends Model
     protected $modelName = '';
 
     const
-        STATUS_ENABLED  = 1,  // 启用
-        STATUS_DISABLED = 0;  // 禁用
+        STATUS_ENABLED  = 1,
+        STATUS_DISABLED = 0;
 
     const STATUS_TEXTS = [
-        self::STATUS_ENABLED  => '启用',
-        self::STATUS_DISABLED => '禁用',
+        self::STATUS_ENABLED  => 'Active',
+        self::STATUS_DISABLED => 'Disabled',
     ];
 
     public function scopeEnabled($query)
