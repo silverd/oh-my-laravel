@@ -3,7 +3,10 @@
 namespace Silverd\OhMyLaravel\Helpers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class ToolsHelper
 {
@@ -272,5 +275,31 @@ class ToolsHelper
         );
 
         return $return;
+    }
+
+    public static function createSeqNo(string $namespace = 'default', int $length = 10)
+    {
+        $tableName = 'incr_keys_' . $namespace;
+
+        try {
+            $insertId = DB::table($tableName)->insertGetId([]);
+        }
+
+        catch (\Exception $e) {
+
+            // 表不存在，则创建表
+            if ($e->getCode() == '42S02') {
+
+                Schema::create($tableName, function (Blueprint $table) {
+                    $table->increments('id')->bigInteger()->unsigned();
+                });
+
+                return static::createSeqNo($namespace, $length);
+            }
+
+            throw $e;
+        }
+
+        return date('YmdHis') . str_pad(substr($insertId, -$length), $length, 0, STR_PAD_LEFT);
     }
 }
