@@ -815,3 +815,10 @@ if (! function_exists('isShouldRunButNot')) {
         ];
     }
 }
+
+if (! function_exists('removeDomain')) {
+    function removeDomain(string $url)
+    {
+        return preg_replace('#^https?://[^/]+#', '', $url);
+    }
+}
