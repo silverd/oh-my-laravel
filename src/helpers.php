@@ -817,8 +817,12 @@ if (! function_exists('isShouldRunButNot')) {
 }
 
 if (! function_exists('removeDomain')) {
-    function removeDomain(string $url)
+    function removeDomain(?string $url)
     {
+        if (! $url) {
+            return '';
+        }
+
         return preg_replace('#^https?://[^/]+#', '', $url);
     }
 }
