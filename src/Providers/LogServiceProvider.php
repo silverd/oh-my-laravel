@@ -51,7 +51,7 @@ class LogServiceProvider extends ServiceProvider
             if (isset($with['cd_secs']) || isset($with['buffer_limit'])) {
                 return new DeduplicationHandler(
                     $handler,
-                    $app['cache']->store('redis'),
+                    $app['cache']->store($app['config']['cache.default']),
                     $with['level'],
                     $with['cd_secs'] ?? 0,
                     $with['buffer_limit'] ?? 1,
