@@ -446,7 +446,7 @@ if (! function_exists('guzHttpRequest')) {
         string $url,
         string | array $params,
         string $method = 'POST',
-        string $format = null,
+        ?string $format = null,
         array $headers = [],
         string $respType = 'JSON',
         array $guzConfig = [],
